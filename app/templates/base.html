@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CareerLense — See Your Career Clearly{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}CareerLense helps you build, analyze, improve, and match your resume with jobs using AI-powered insights.{% endblock %}">
+    
+    <!-- Open Graph SEO -->
+    <meta property="og:title" content="CareerLense — See Your Career Clearly">
+    <meta property="og:description" content="AI-powered career and resume platform. Build, analyze, improve, and match your resume with jobs without login.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CareerLense">
+    
+    <!-- Tailwind CSS CDN with configuration -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#EEF2FF',
+                            100: '#E0E7FF',
+                            200: '#C7D2FE',
+                            300: '#A5B4FC',
+                            400: '#818CF8',
+                            500: '#6366F1',
+                            600: '#4F46E5',
+                            700: '#4338CA',
+                            800: '#3730A3',
+                            900: '#312E81',
+                            950: '#1E1B4B',
+                        },
+                        navy: {
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#020617',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Dark Mode Init Script (Prevents flash) -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('careerlense_theme') || 'system';
+            const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            if (savedTheme === 'dark' || (savedTheme === 'system' && systemDark)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        })();
+    </script>
+</head>
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Top Announcement Banner -->
+    <div class="bg-gradient-to-r from-brand-600 via-indigo-600 to-violet-600 text-white text-xs font-semibold py-1.5 px-4 text-center flex items-center justify-center gap-2">
+        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-bold bg-white/20 text-white backdrop-blur-sm">
+            Instant Access
+        </span>
+        <span>✨ 100% Free &amp; Private — <strong>No Login Required</strong> to build, analyze, or match resumes.</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 w-full glass-panel border-b border-slate-200/80 dark:border-slate-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                
+                <!-- Logo & Brand -->
+                <a href="{{ url_for('main.index') }}" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-lg p-1">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform duration-200">
+                        <!-- Custom Lens + Career Growth AI Icon -->
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            <path d="M11 8v6"></path>
+                            <path d="M8 11h6"></path>
+                            <circle cx="11" cy="11" r="1.5" fill="currentColor"></circle>
+                        </svg>
+                    </div>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
+                            CareerLense
+                            <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 rounded border border-brand-200 dark:border-brand-800">AI</span>
+                        </span>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-tight -mt-0.5">See Your Career Clearly</span>
+                    </div>
+                </a>
+
+                <!-- Desktop Navigation Links -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-2 text-sm font-medium">
+                    <a href="{{ url_for('main.features') }}" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Features</a>
+                    <a href="{{ url_for('main.builder') }}" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Resume Builder</a>
+                    <a href="{{ url_for('main.analyzer') }}" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Resume Analyzer</a>
+                    <a href="{{ url_for('main.job_matcher') }}" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">Job Matcher</a>
+                    <a href="{{ url_for('main.how_it_works') }}" class="px-3 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-colors">How It Works</a>
+                </nav>
+
+                <!-- Right Action Buttons -->
+                <div class="flex items-center gap-2 sm:gap-3">
+                    
+                    <!-- Dark Mode Toggle Button -->
+                    <button id="themeToggleBtn" aria-label="Toggle Color Theme" class="p-2 text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500">
+                        <i data-lucide="moon" class="w-5 h-5 hidden dark:block"></i>
+                        <i data-lucide="sun" class="w-5 h-5 block dark:hidden"></i>
+                    </button>
+
+                    <!-- CareerLense AI Assistant Button -->
+                    <button id="aiAssistantToggleBtn" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-brand-200 dark:border-brand-800 text-brand-700 dark:text-brand-300 bg-brand-50/70 dark:bg-brand-950/50 hover:bg-brand-100 dark:hover:bg-brand-900/60 text-xs font-semibold transition-all">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-brand-500 animate-pulse-subtle"></i>
+                        CareerLense AI
+                    </button>
+
+                    <!-- Primary Actions (No login required) -->
+                    <div class="hidden sm:flex items-center gap-2">
+                        <a href="{{ url_for('main.analyzer') }}" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 hover:text-brand-600 dark:hover:text-white bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                            <i data-lucide="upload" class="w-4 h-4"></i>
+                            Analyze Resume
+                        </a>
+                        <a href="{{ url_for('main.builder') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 shadow-md shadow-brand-500/20 active:scale-95 transition-all">
+                            <i data-lucide="file-plus" class="w-4 h-4"></i>
+                            Build Resume
+                        </a>
+                    </div>
+
+                    <!-- User Account / Session Menu -->
+                    <div class="relative" id="userMenuContainer">
+                        <button id="userMenuBtn" class="p-2 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-none">
+                            <i data-lucide="user" class="w-5 h-5"></i>
+                        </button>
+                        <div id="userDropdown" class="hidden absolute right-0 mt-2 w-56 glass-panel rounded-xl shadow-xl py-2 z-50 text-sm">
+                            <div class="px-4 py-2 border-b border-slate-200 dark:border-slate-800">
+                                <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Session Status</span>
+                                <p id="sessionUserLabel" class="font-medium text-slate-800 dark:text-slate-200">Anonymous (Guest)</p>
+                                <span class="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-0.5">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> No Login Required
+                                </span>
+                            </div>
+                            <div class="py-1">
+                                <a href="{{ url_for('main.saved_resumes') }}" class="flex items-center gap-2 px-4 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                                    <i data-lucide="bookmark" class="w-4 h-4 text-slate-400"></i>
+                                    Saved Resumes
+                                </a>
+                                <a href="{{ url_for('main.history') }}" class="flex items-center gap-2 px-4 py-2 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                                    <i data-lucide="history" class="w-4 h-4 text-slate-400"></i>
+                                    Analysis History
+                                </a>
+                            </div>
+                            <div class="border-t border-slate-200 dark:border-slate-800 pt-1">
+                                <button onclick="window.CareerLense.clearSession()" class="w-full text-left flex items-center gap-2 px-4 py-2 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                    Clear Session / Delete Resume
+                                </button>
+                                <div id="authLinks">
+                                    <a href="{{ url_for('main.login') }}" class="flex items-center gap-2 px-4 py-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 text-xs">
+                                        <i data-lucide="log-in" class="w-4 h-4"></i> Optional Sign In
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mobile Menu Hamburger -->
+                    <button id="mobileMenuBtn" aria-label="Open mobile navigation" class="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 dark:border-slate-800 px-4 pt-3 pb-5 space-y-2 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md">
+            <a href="{{ url_for('main.features') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Features</a>
+            <a href="{{ url_for('main.builder') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Resume Builder</a>
+            <a href="{{ url_for('main.analyzer') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Resume Analyzer</a>
+            <a href="{{ url_for('main.job_matcher') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">Job Matcher</a>
+            <a href="{{ url_for('main.how_it_works') }}" class="block px-3 py-2 rounded-lg text-base font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">How It Works</a>
+            <div class="pt-3 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2">
+                <a href="{{ url_for('main.builder') }}" class="w-full text-center py-2.5 rounded-xl font-semibold text-white bg-brand-600 hover:bg-brand-500 shadow-md">Build Resume (Free)</a>
+                <a href="{{ url_for('main.analyzer') }}" class="w-full text-center py-2.5 rounded-xl font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800">Upload &amp; Analyze</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Block -->
+    <main class="flex-grow">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- CareerLense AI Floating Assistant Drawer -->
+    <div id="aiDrawer" class="fixed inset-y-0 right-0 z-50 w-full sm:w-96 bg-white dark:bg-slate-900 border-l border-slate-200 dark:border-slate-800 shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <!-- Drawer Header -->
+        <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-brand-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800/80">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center shadow-sm">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                </div>
+                <div>
+                    <h3 class="font-bold text-sm text-slate-900 dark:text-white">CareerLense AI</h3>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">Your Intelligent Career Advisor</p>
+                </div>
+            </div>
+            <button id="closeAiDrawerBtn" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Preset Prompts -->
+        <div class="px-4 py-2.5 border-b border-slate-100 dark:border-slate-800/60 bg-slate-50/50 dark:bg-slate-950/30 flex items-center gap-1.5 overflow-x-auto text-[11px]">
+            <button onclick="window.CareerLense.sendPresetPrompt('How can I improve my resume?')" class="whitespace-nowrap px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-brand-500">
+                How to improve?
+            </button>
+            <button onclick="window.CareerLense.sendPresetPrompt('What is weak in my resume?')" class="whitespace-nowrap px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-brand-500">
+                What is weak?
+            </button>
+            <button onclick="window.CareerLense.sendPresetPrompt('How should I write my summary?')" class="whitespace-nowrap px-2.5 py-1 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-brand-500">
+                Summary tips
+            </button>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div id="aiChatMessages" class="flex-grow p-4 overflow-y-auto space-y-3.5 text-xs">
+            <div class="flex gap-2.5">
+                <div class="w-7 h-7 rounded-lg bg-brand-600/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0">
+                    <i data-lucide="bot" class="w-4 h-4"></i>
+                </div>
+                <div class="p-3 rounded-2xl rounded-tl-sm bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 max-w-[85%] leading-relaxed">
+                    Hello! I'm <strong>CareerLense AI</strong>. Ask me anything about improving your resume bullets, identifying skill gaps, or tailoring for specific job positions.
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input Form -->
+        <form id="aiChatForm" class="p-3.5 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 flex gap-2">
+            <input type="text" id="aiChatInput" placeholder="Ask CareerLense AI..." class="flex-grow text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-brand-500 text-slate-800 dark:text-white" required>
+            <button type="submit" class="px-3.5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-500 text-white font-medium text-xs flex items-center justify-center shadow-sm">
+                <i data-lucide="send" class="w-4 h-4"></i>
+            </button>
+        </form>
+    </div>
+    <div id="aiDrawerBackdrop" class="hidden fixed inset-0 z-40 bg-slate-900/40 backdrop-blur-sm transition-opacity"></div>
+
+    <!-- Toast Notifications Container -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full pointer-events-none"></div>
+
+    <!-- Footer -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                
+                <!-- Col 1: Brand Info -->
+                <div class="space-y-4 md:col-span-1">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-violet-600 flex items-center justify-center text-white">
+                            <i data-lucide="eye" class="w-4 h-4"></i>
+                        </div>
+                        <span class="text-lg font-bold text-slate-900 dark:text-white">CareerLense</span>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                        “See Your Career Clearly.”<br>
+                        AI-powered career and resume platform. Build better resumes, understand your strengths, and close skill gaps.
+                    </p>
+                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold border border-emerald-200 dark:border-emerald-800">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> No Login Required
+                    </div>
+                </div>
+
+                <!-- Col 2: Core Tools -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Tools</h4>
+                    <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                        <li><a href="{{ url_for('main.builder') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Resume Builder</a></li>
+                        <li><a href="{{ url_for('main.analyzer') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Resume Analyzer</a></li>
+                        <li><a href="{{ url_for('main.job_matcher') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Job Description Matcher</a></li>
+                        <li><a href="{{ url_for('main.improver') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">AI Resume Rewriter</a></li>
+                        <li><a href="{{ url_for('main.results') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Resume Score &amp; ATS</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Resources & Product -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Platform</h4>
+                    <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
+                        <li><a href="{{ url_for('main.features') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Features</a></li>
+                        <li><a href="{{ url_for('main.how_it_works') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">How It Works</a></li>
+                        <li><a href="{{ url_for('main.about') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">About Us</a></li>
+                        <li><a href="{{ url_for('main.saved_resumes') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Saved Resumes</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Privacy & Compliance -->
+                <div>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Privacy &amp; Trust</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
+                        Your resume is processed temporarily and is not permanently stored unless you choose to save it.
+                    </p>
+                    <div class="flex flex-col gap-2 text-xs">
+                        <button onclick="window.CareerLense.clearSession()" class="inline-flex items-center gap-1.5 text-rose-600 dark:text-rose-400 hover:underline">
+                            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Delete Resume / Clear Session
+                        </button>
+                        <div class="flex gap-3 text-slate-500 dark:text-slate-400 pt-1">
+                            <a href="{{ url_for('main.privacy') }}" class="hover:underline">Privacy Policy</a>
+                            <span>•</span>
+                            <a href="{{ url_for('main.terms') }}" class="hover:underline">Terms of Service</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 dark:text-slate-400 gap-4">
+                <p>&copy; 2026 CareerLense. Build. Analyze. Improve. All rights reserved.</p>
+                <p class="text-slate-400 dark:text-slate-500 text-[11px]">
+                    Estimates provided for self-improvement; no guarantee of employment outcomes.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Core App JS -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>

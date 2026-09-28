@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Analyze Your Resume — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-16 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center space-y-3 mb-12">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-xs font-semibold border border-emerald-200 dark:border-emerald-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> No Account Required
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Analyze Your Resume
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-xl mx-auto leading-relaxed">
+                Upload your PDF or DOCX and get actionable AI feedback on your content quality, skills, formatting, and ATS-style readability.
+            </p>
+        </div>
+
+        <!-- Upload Component Card -->
+        <div class="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-brand-500 dark:hover:border-brand-500 transition-colors shadow-sm text-center relative group" id="dropZone">
+            
+            <input type="file" id="resumeFileInput" accept=".pdf,.docx" class="hidden">
+
+            <div class="space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center mx-auto shadow-sm group-hover:scale-110 transition-transform">
+                    <i data-lucide="upload-cloud" class="w-8 h-8"></i>
+                </div>
+                
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">
+                        Drag and drop your resume here
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        Supports <strong>PDF</strong> and <strong>DOCX</strong> (Up to 10MB)
+                    </p>
+                </div>
+
+                <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+                    <button type="button" id="browseFileBtn" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 shadow-md shadow-brand-500/20 active:scale-95 transition-all">
+                        Choose File
+                    </button>
+                    <button type="button" id="useSampleBtn" class="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all">
+                        Try with Sample Resume
+                    </button>
+                </div>
+
+                <!-- Selected File Display -->
+                <div id="fileSelectionBar" class="hidden mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-md mx-auto flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <i data-lucide="file-check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+                        <span id="selectedFileName" class="font-medium text-slate-800 dark:text-slate-200 truncate">resume.pdf</span>
+                    </div>
+                    <button type="button" id="startUploadBtn" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shrink-0 shadow-sm">
+                        Start Analysis
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading Skeleton & Dynamic Status Overlay -->
+            <div id="loadingOverlay" class="hidden absolute inset-0 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 space-y-4 z-20">
+                <div class="relative flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full border-4 border-brand-200 dark:border-brand-900 border-t-brand-600 animate-spin"></div>
+                    <i data-lucide="sparkles" class="w-6 h-6 text-brand-600 absolute"></i>
+                </div>
+                <div class="text-center space-y-1">
+                    <h3 id="loadingStatusText" class="text-sm font-bold text-slate-900 dark:text-white">
+                        Reading your resume...
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Extracting sections, evaluating skills, and checking ATS readability.
+                    </p>
+                </div>
+                <!-- Skeleton bars -->
+                <div class="w-64 space-y-2 pt-2">
+                    <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+                    <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse w-5/6 mx-auto"></div>
+                    <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse w-4/6 mx-auto"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Privacy & Security Guarantee Banner -->
+        <div class="mt-8 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+                <i data-lucide="lock" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+                <span>Your file is processed temporarily in memory. Never shared with third parties or permanent databases.</span>
+            </div>
+            <a href="{{ url_for('main.privacy') }}" class="text-brand-600 dark:text-brand-400 font-semibold hover:underline shrink-0">
+                Privacy Policy &rarr;
+            </a>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analyzer.js') }}"></script>
+{% endblock %}

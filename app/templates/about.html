@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}About Us — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-16 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        <!-- Header -->
+        <div class="text-center space-y-4">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Our Mission</span>
+            <h1 class="text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                See Your Career Clearly
+            </h1>
+            <p class="text-base text-slate-600 dark:text-slate-400 max-w-2xl mx-auto leading-relaxed">
+                CareerLense was founded on a simple premise: job seekers deserve transparent, honest, and intelligent feedback on their career materials without predatory paywalls or forced registrations.
+            </p>
+        </div>
+
+        <!-- Philosophy Cards -->
+        <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6">
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Our Core Philosophy</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 text-center">
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                    <span class="font-bold text-brand-600 block text-sm">Upload</span>
+                    <span class="text-[11px] text-slate-400">Fast &amp; Free</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                    <span class="font-bold text-indigo-600 block text-sm">Understand</span>
+                    <span class="text-[11px] text-slate-400">Clear Scores</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                    <span class="font-bold text-violet-600 block text-sm">Improve</span>
+                    <span class="text-[11px] text-slate-400">Actionable AI</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                    <span class="font-bold text-blue-600 block text-sm">Match</span>
+                    <span class="text-[11px] text-slate-400">Target Roles</span>
+                </div>
+                <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                    <span class="font-bold text-emerald-600 block text-sm">Grow</span>
+                    <span class="text-[11px] text-slate-400">Land Interviews</span>
+                </div>
+            </div>
+            <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                Many modern career platforms promise guaranteed job offers or lock basic PDF downloads behind recurring credit card trials. At CareerLense, our tools are accessible immediately. We do not require accounts, we respect your privacy, and our AI is strictly instructed to enhance your real background rather than generating fabricated facts.
+            </p>
+        </div>
+
+        <!-- Principles -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+                <div class="w-10 h-10 rounded-xl bg-brand-100 dark:bg-brand-900/60 text-brand-600 dark:text-brand-300 flex items-center justify-center font-bold">1</div>
+                <h3 class="font-bold text-sm text-slate-900 dark:text-white">Privacy First</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Anonymous sessions are default. You can delete your resume or clear session history with a single click.</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/60 text-emerald-600 dark:text-emerald-300 flex items-center justify-center font-bold">2</div>
+                <h3 class="font-bold text-sm text-slate-900 dark:text-white">Factual Integrity</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">Our AI never hallucinates companies, degrees, or fake metrics. Truthful representation builds long-term careers.</p>
+            </div>
+            <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+                <div class="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-900/60 text-violet-600 dark:text-violet-300 flex items-center justify-center font-bold">3</div>
+                <h3 class="font-bold text-sm text-slate-900 dark:text-white">Explainable Metrics</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">We show the transparent mathematical weighting behind every score so you know exactly where to make edits.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

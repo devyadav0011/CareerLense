@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Features — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-16 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-50 dark:bg-brand-950 text-brand-700 dark:text-brand-300 text-xs font-semibold border border-brand-200 dark:border-brand-800 mb-3">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> All Features Unlocked Without Sign-Up
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+                Powerful Tools for Every Stage of Your Search
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-3 leading-relaxed">
+                Discover how CareerLense's intelligent parser, transparent scoring algorithms, and AI assistants help you navigate modern recruiting systems.
+            </p>
+        </div>
+
+        <!-- Detailed Feature Breakdown -->
+        <div class="space-y-12">
+            
+            <!-- Feature 1: AI Resume Analyzer & Scoring -->
+            <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="inline-flex items-center gap-1.5 text-xs font-bold text-brand-600 dark:text-brand-400 uppercase tracking-wider">
+                        <i data-lucide="scan-line" class="w-4 h-4"></i> Deep Analysis
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+                        AI Resume Analyzer &amp; Transparent Scoring
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Upload your PDF or DOCX file to receive instant multi-section evaluation. Unlike black-box scoring systems, CareerLense uses transparent, published rules across 7 distinct dimensions: Content Quality (20%), Skills (15%), Projects (15%), Experience (15%), Education (10%), Formatting (10%), and Completeness (15%).
+                    </p>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300">✓ PyMuPDF &amp; python-docx parsing</span>
+                        <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300">✓ Action verb detection</span>
+                        <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300">✓ Quantifiable metrics scan</span>
+                    </div>
+                    <div class="pt-2">
+                        <a href="{{ url_for('main.analyzer') }}" class="inline-flex items-center gap-2 text-xs font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                            Try the Analyzer <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Sample Quality Breakdown</h3>
+                    <div class="space-y-2.5 text-xs">
+                        <div class="flex justify-between items-center"><span>Content Quality</span><span class="font-bold text-brand-600">84 / 100</span></div>
+                        <div class="flex justify-between items-center"><span>Skills Multi-Tier</span><span class="font-bold text-brand-600">88 / 100</span></div>
+                        <div class="flex justify-between items-center"><span>Projects Portfolio</span><span class="font-bold text-brand-600">81 / 100</span></div>
+                        <div class="flex justify-between items-center"><span>Experience Trajectory</span><span class="font-bold text-brand-600">76 / 100</span></div>
+                        <div class="flex justify-between items-center"><span>Education</span><span class="font-bold text-brand-600">90 / 100</span></div>
+                        <div class="flex justify-between items-center"><span>ATS-Style Formatting</span><span class="font-bold text-brand-600">86 / 100</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 2: Job Matcher & Skill Gap Analysis -->
+            <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-5 order-2 lg:order-1 p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">Job Match Indicators</h3>
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <span class="font-semibold text-emerald-600 dark:text-emerald-400 block mb-1">Matched Skills (✓)</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-medium">Python</span>
+                                <span class="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-medium">SQL</span>
+                                <span class="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-medium">Flask</span>
+                                <span class="px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 font-medium">Git</span>
+                            </div>
+                        </div>
+                        <div>
+                            <span class="font-semibold text-amber-600 dark:text-amber-400 block mb-1">Missing / Weak Skills (⚠)</span>
+                            <div class="flex flex-wrap gap-1.5">
+                                <span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-medium">Docker</span>
+                                <span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-medium">CI/CD</span>
+                                <span class="px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 font-medium">Unit Testing</span>
+                            </div>
+                            <span class="text-[10px] text-slate-400 mt-1 block">Consider adding only if accurate to your real experience.</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-7 order-1 lg:order-2 space-y-4">
+                    <div class="inline-flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400 uppercase tracking-wider">
+                        <i data-lucide="crosshair" class="w-4 h-4"></i> Targeted Matching
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+                        Job Description Matcher &amp; Skill Gap Analysis
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Never send a generic resume again. Paste any job posting to analyze how closely your background aligns with the company's requirements. Review matched skills, missing technical keywords, and top job-specific improvements without inventing fake experience.
+                    </p>
+                    <div class="pt-2">
+                        <a href="{{ url_for('main.job_matcher') }}" class="inline-flex items-center gap-2 text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline">
+                            Match a job description <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Feature 3: Live Builder & Templates -->
+            <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">
+                        <i data-lucide="layout-template" class="w-4 h-4"></i> Real-Time Builder
+                    </div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+                        Interactive Resume Builder with Live A4 Preview
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Build from scratch with our structured form editor and view changes instantly in the side-by-side preview. Switch between Minimal, Modern, and Professional templates seamlessly without losing any entered data.
+                    </p>
+                    <div class="flex flex-wrap gap-2 pt-2">
+                        <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300">✓ 3 Professional Templates</span>
+                        <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300">✓ Tag-based skill categorization</span>
+                        <span class="px-2.5 py-1 rounded-md bg-slate-100 dark:bg-slate-800 text-[11px] font-medium text-slate-700 dark:text-slate-300">✓ Print and PDF export</span>
+                    </div>
+                    <div class="pt-2">
+                        <a href="{{ url_for('main.builder') }}" class="inline-flex items-center gap-2 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline">
+                            Open Resume Builder <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 p-6 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/80 text-center">
+                    <div class="inline-block p-4 rounded-xl bg-white dark:bg-slate-900 shadow-md border border-slate-200 dark:border-slate-700 max-w-xs text-left">
+                        <div class="h-2 w-16 bg-brand-600 rounded mb-2"></div>
+                        <div class="h-1.5 w-32 bg-slate-200 dark:bg-slate-700 rounded mb-4"></div>
+                        <div class="space-y-1.5">
+                            <div class="h-1 w-full bg-slate-100 dark:bg-slate-800 rounded"></div>
+                            <div class="h-1 w-5/6 bg-slate-100 dark:bg-slate-800 rounded"></div>
+                            <div class="h-1 w-4/6 bg-slate-100 dark:bg-slate-800 rounded"></div>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-slate-100 dark:border-slate-800 flex justify-between text-[10px] text-slate-400">
+                            <span>Minimal</span>
+                            <span class="text-brand-600 font-bold">Modern</span>
+                            <span>Professional</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

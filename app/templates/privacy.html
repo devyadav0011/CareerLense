@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-16 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Header -->
+        <div class="space-y-3">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Trust &amp; Transparency</span>
+            <h1 class="text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+                Privacy Policy
+            </h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+                Last updated: 2026. Because resumes contain sensitive personal details, we are committed to uncompromising privacy.
+            </p>
+        </div>
+
+        <!-- Privacy Callout Card -->
+        <div class="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 space-y-3">
+            <div class="flex items-center gap-2">
+                <i data-lucide="shield-check" class="w-5 h-5 text-emerald-600 dark:text-emerald-400"></i>
+                <h3 class="font-bold text-sm text-emerald-900 dark:text-emerald-300">Core Privacy Guarantees</h3>
+            </div>
+            <ul class="text-xs text-emerald-800 dark:text-emerald-400 space-y-1.5 list-disc list-inside">
+                <li><strong>No account required:</strong> You can build, analyze, and match resumes anonymously.</li>
+                <li><strong>Temporary processing:</strong> Files are processed in session memory and temporary storage.</li>
+                <li><strong>No permanent storage:</strong> Anonymous resumes are never permanently saved or sold to third parties.</li>
+                <li><strong>Instant data deletion:</strong> You have full power to delete your data anytime using the buttons below.</li>
+            </ul>
+            <div class="pt-2 flex flex-wrap gap-3">
+                <button onclick="window.CareerLense.clearSession()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 shadow-sm transition-all">
+                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Clear Session &amp; Delete Resume
+                </button>
+            </div>
+        </div>
+
+        <!-- Privacy Details -->
+        <div class="p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-6 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+            <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">1. Information We Process</h2>
+                <p>When you upload a resume or paste job descriptions, CareerLense parses the plain text to detect standard career sections, extract skills, and calculate analytical quality scores. We do not use your resume to train public AI foundation models.</p>
+            </div>
+
+            <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">2. How Anonymous Sessions Work</h2>
+                <p>By default, CareerLense operates via client cookies and temporary server sessions. You are identified as an anonymous guest. No email address or credit card is required to access any core feature.</p>
+            </div>
+
+            <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">3. Optional Accounts</h2>
+                <p>If you explicitly choose to click "Save My Resume" and register an optional user account, your resume and analysis history will be saved to your personal database record so you can access it across browser restarts.</p>
+            </div>
+
+            <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">4. Data Retention and Deletion</h2>
+                <p>You can purge your temporary upload and session cache at any time using the "Delete Resume" or "Clear Session" buttons located in the user menu and the footer. Once cleared, the files are deleted immediately from local disk.</p>
+            </div>
+
+            <div>
+                <h2 class="text-base font-bold text-slate-900 dark:text-white mb-2">5. Security Practices</h2>
+                <p>We enforce filename sanitization, file-extension whitelisting, upload file-size limits (10MB default), CSRF protection, and path traversal defenses across all backend endpoints.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}

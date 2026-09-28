@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Saved Resumes — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-12 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Header -->
+        <div class="flex flex-wrap items-center justify-between gap-4 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Saved Resumes</h1>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Manage resumes permanently stored in your optional account.</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <button type="button" id="saveCurrentSessionBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 shadow-sm flex items-center gap-1.5">
+                    <i data-lucide="bookmark-plus" class="w-4 h-4"></i> Save Current Resume
+                </button>
+            </div>
+        </div>
+
+        <!-- List Container -->
+        <div id="savedResumesList" class="space-y-4">
+            <div class="p-12 text-center text-xs text-slate-400">Loading saved resumes...</div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        loadResumes();
+
+        document.getElementById('saveCurrentSessionBtn')?.addEventListener('click', async () => {
+            try {
+                const res = await fetch('/api/auth/save-resume', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({})
+                });
+                const data = await res.json();
+                if (data.success) {
+                    window.CareerLense?.showToast('Current resume saved to account!', 'success');
+                    loadResumes();
+                } else {
+                    window.CareerLense?.showToast(data.error || 'Failed to save resume.', 'warning');
+                    if (res.status === 401) {
+                        setTimeout(() => window.location.href = '/login', 1000);
+                    }
+                }
+            } catch (e) {
+                window.CareerLense?.showToast('Error saving resume.', 'error');
+            }
+        });
+    });
+
+    async function loadResumes() {
+        const container = document.getElementById('savedResumesList');
+        try {
+            const res = await fetch('/api/auth/saved-resumes');
+            const data = await res.json();
+
+            if (!res.ok) {
+                container.innerHTML = `
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-3">
+                        <i data-lucide="lock" class="w-8 h-8 text-slate-400 mx-auto"></i>
+                        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">Account Sign In Required for Cloud Storage</h3>
+                        <p class="text-xs text-slate-500">Sign in to sync your saved resumes across devices.</p>
+                        <a href="/login" class="inline-flex px-4 py-2 rounded-xl bg-brand-600 text-white font-bold text-xs">Sign In</a>
+                    </div>
+                `;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            if (!data.resumes || data.resumes.length === 0) {
+                container.innerHTML = `
+                    <div class="p-8 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-center space-y-3">
+                        <i data-lucide="file-question" class="w-8 h-8 text-slate-400 mx-auto"></i>
+                        <h3 class="font-bold text-sm text-slate-800 dark:text-slate-200">No Saved Resumes Yet</h3>
+                        <p class="text-xs text-slate-500">Click "Save Current Resume" to save your active session resume to your account.</p>
+                    </div>
+                `;
+                if (window.lucide) window.lucide.createIcons();
+                return;
+            }
+
+            container.innerHTML = '';
+            data.resumes.forEach(r => {
+                const card = document.createElement('div');
+                card.className = 'p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-4 text-xs';
+                const score = r.latest_analysis ? `${r.latest_analysis.overall_score}/100` : 'Not analyzed';
+                card.innerHTML = `
+                    <div class="space-y-1">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="file-text" class="w-4 h-4 text-brand-600"></i>
+                            <h3 class="font-bold text-sm text-slate-900 dark:text-white">${escapeHtml(r.title)}</h3>
+                        </div>
+                        <div class="text-[11px] text-slate-400 flex gap-3">
+                            <span>Score: <strong class="text-brand-600">${score}</strong></span>
+                            <span>Saved: ${new Date(r.created_at).toLocaleDateString()}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="deleteResume(${r.id})" class="p-2 rounded-lg text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            if (window.lucide) window.lucide.createIcons();
+        } catch (e) {
+            container.innerHTML = '<div class="text-center p-6 text-xs text-rose-500">Failed to load resumes.</div>';
+        }
+    }
+
+    async function deleteResume(id) {
+        if (!confirm('Are you sure you want to delete this saved resume?')) return;
+        try {
+            await fetch(`/api/auth/saved-resumes/${id}`, { method: 'DELETE' });
+            window.CareerLense?.showToast('Resume deleted.', 'info');
+            loadResumes();
+        } catch (e) {}
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return String(text).replace(/[&<>"']/g, m => map[m]);
+    }
+</script>
+{% endblock %}

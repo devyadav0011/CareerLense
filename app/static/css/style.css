@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.dark .glass-panel {
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(51, 65, 85, 0.7);
+}
+
+/* Gradients */
+.gradient-text {
+    background: linear-gradient(135deg, #1E3A8A 0%, #4F46E5 50%, #7C3AED 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.dark .gradient-text {
+    background: linear-gradient(135deg, #60A5FA 0%, #818CF8 50%, #C084FC 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-glow {
+    background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.15) 0%, rgba(124, 58, 237, 0.05) 50%, transparent 70%);
+}
+
+.dark .hero-glow {
+    background: radial-gradient(circle at 50% 30%, rgba(99, 102, 241, 0.25) 0%, rgba(124, 58, 237, 0.1) 50%, transparent 70%);
+}
+
+/* Score Dial Rings */
+.score-circle {
+    transition: stroke-dashoffset 1s ease-in-out;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+    background: #334155;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* Live Resume Preview Container - A4 Aspect Ratio Simulation */
+.resume-preview-sheet {
+    width: 100%;
+    min-height: 1000px;
+    background: #ffffff;
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    padding: 40px;
+    color: #1E293B;
+    transition: all 0.2s ease;
+}
+
+.dark .resume-preview-sheet {
+    box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
+}
+
+/* Template 1: Minimal */
+.template-minimal {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #0F172A;
+}
+.template-minimal .preview-header {
+    text-align: center;
+    border-bottom: 1px solid #E2E8F0;
+    padding-bottom: 16px;
+}
+.template-minimal .preview-sec-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #334155;
+    border-bottom: 1px solid #E2E8F0;
+    padding-bottom: 4px;
+    margin-top: 16px;
+    margin-bottom: 8px;
+}
+
+/* Template 2: Modern */
+.template-modern {
+    font-family: var(--font-sans);
+    color: #1E293B;
+}
+.template-modern .preview-header {
+    border-left: 4px solid #4F46E5;
+    padding-left: 16px;
+    margin-bottom: 20px;
+}
+.template-modern .preview-sec-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4F46E5;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    margin-bottom: 10px;
+}
+.template-modern .preview-sec-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #E2E8F0;
+}
+
+/* Template 3: Professional */
+.template-professional {
+    font-family: 'Georgia', serif;
+    color: #0F172A;
+}
+.template-professional .preview-header {
+    background: #0F172A;
+    color: #FFFFFF;
+    margin: -40px -40px 24px -40px;
+    padding: 32px 40px;
+}
+.template-professional .preview-header h1 {
+    color: #FFFFFF !important;
+}
+.template-professional .preview-header p {
+    color: #94A3B8 !important;
+}
+.template-professional .preview-sec-title {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #1E3A8A;
+    border-bottom: 2px solid #1E3A8A;
+    padding-bottom: 4px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Animations */
+@keyframes pulseSubtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+.animate-pulse-subtle {
+    animation: pulseSubtle 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Print Rules */
+@media print {
+    body * {
+        visibility: hidden;
+    }
+    .resume-preview-sheet, .resume-preview-sheet * {
+        visibility: visible;
+    }
+    .resume-preview-sheet {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        box-shadow: none;
+        padding: 0;
+    }
+}

@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Builder — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-8 bg-slate-100/70 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
+    <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Builder Top Action Bar -->
+        <div class="mb-6 p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-4">
+            
+            <!-- Left: Title & Template Chooser -->
+            <div class="flex flex-wrap items-center gap-4">
+                <div>
+                    <h1 class="text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        Resume Builder
+                        <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2 py-0.5 rounded-full border border-emerald-200 dark:border-emerald-800">
+                            Auto-Saving
+                        </span>
+                    </h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Live preview updates instantly as you type.</p>
+                </div>
+
+                <!-- Template Selector (Minimal, Modern, Professional) -->
+                <div class="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-slate-800 text-xs font-semibold">
+                    <button type="button" data-template="modern" class="template-btn active px-3 py-1.5 rounded-lg text-brand-700 dark:text-brand-300 bg-white dark:bg-slate-700 shadow-sm transition-all">
+                        Modern
+                    </button>
+                    <button type="button" data-template="minimal" class="template-btn px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+                        Minimal
+                    </button>
+                    <button type="button" data-template="professional" class="template-btn px-3 py-1.5 rounded-lg text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all">
+                        Professional
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right: Actions (Download PDF, Print, Analyze, AI Improver) -->
+            <div class="flex flex-wrap items-center gap-2.5">
+                <button type="button" id="loadSampleBtn" class="px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all flex items-center gap-1.5">
+                    <i data-lucide="file-text" class="w-3.5 h-3.5 text-slate-500"></i>
+                    Load Sample
+                </button>
+                <button type="button" id="printResumeBtn" class="px-3 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all flex items-center gap-1.5">
+                    <i data-lucide="printer" class="w-3.5 h-3.5 text-slate-500"></i>
+                    Print
+                </button>
+                <a href="{{ url_for('main.results') }}" id="analyzeThisResumeBtn" class="px-3.5 py-2 rounded-xl text-xs font-semibold text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/60 border border-brand-200 dark:border-brand-800 hover:bg-brand-100 transition-all flex items-center gap-1.5">
+                    <i data-lucide="scan" class="w-3.5 h-3.5"></i>
+                    Analyze Quality
+                </a>
+                <button type="button" id="exportPdfBtn" class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-brand-600 hover:bg-brand-500 shadow-md shadow-brand-500/20 active:scale-95 transition-all flex items-center gap-1.5">
+                    <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                    Download PDF
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Main Split Screen: Left Form, Right Preview -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+            
+            <!-- Left Form Column (lg:col-span-6 xl:col-span-5) -->
+            <div class="lg:col-span-6 xl:col-span-5 space-y-6">
+                
+                <!-- Section 1: Personal Info -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="user" class="w-4 h-4 text-brand-600"></i>
+                            Personal Information
+                        </h2>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Full Name *</label>
+                            <input type="text" id="pi_fullName" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="e.g. Alex Morgan">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Professional Title</label>
+                            <input type="text" id="pi_title" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="e.g. Senior Full-Stack Engineer">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Email Address *</label>
+                            <input type="email" id="pi_email" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="alex@example.com">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Phone Number</label>
+                            <input type="text" id="pi_phone" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="+1 (555) 019-2834">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Location</label>
+                            <input type="text" id="pi_location" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="San Francisco, CA or Remote">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">LinkedIn URL</label>
+                            <input type="text" id="pi_linkedin" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="linkedin.com/in/alexmorgan">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">GitHub URL</label>
+                            <input type="text" id="pi_github" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="github.com/alexmorgan">
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Portfolio / Personal Website</label>
+                            <input type="text" id="pi_portfolio" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="alexmorgan.dev">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Summary with AI Assistant -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-3">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="align-left" class="w-4 h-4 text-indigo-600"></i>
+                            Professional Summary
+                        </h2>
+                        <button type="button" id="aiImproveSummaryBtn" class="text-[11px] font-semibold text-brand-600 dark:text-brand-400 hover:text-brand-700 flex items-center gap-1 bg-brand-50 dark:bg-brand-950/60 px-2.5 py-1 rounded-lg border border-brand-200 dark:border-brand-800">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Improve Summary
+                        </button>
+                    </div>
+                    <textarea id="pi_summary" rows="3" class="w-full text-xs p-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="2-3 sentence overview of your background, core technical focus, and accomplishments..."></textarea>
+                    <span class="text-[10px] text-slate-400 block">Tip: Highlight your primary stack and proven results without making unverifiable claims.</span>
+                </div>
+
+                <!-- Section 3: Skills (Tag Based) -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="sparkle" class="w-4 h-4 text-violet-600"></i>
+                            Skills (Categorized)
+                        </h2>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Programming Languages (Comma-separated)</label>
+                            <input type="text" id="skills_lang" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="Python, JavaScript, TypeScript, C++">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Frameworks &amp; Libraries</label>
+                            <input type="text" id="skills_frameworks" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="React, Flask, Node.js, Tailwind CSS">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Databases</label>
+                            <input type="text" id="skills_databases" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="PostgreSQL, SQLite, Redis, MongoDB">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Cloud &amp; DevOps</label>
+                            <input type="text" id="skills_cloud" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="AWS, Docker, CI/CD, GitHub Actions">
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Tools &amp; Methodologies</label>
+                            <input type="text" id="skills_tools" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="Git, Postman, Linux, Agile/Scrum">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 4: Experience -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="briefcase" class="w-4 h-4 text-emerald-600"></i>
+                            Experience
+                        </h2>
+                        <button type="button" id="addExperienceBtn" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Position
+                        </button>
+                    </div>
+
+                    <div id="experienceList" class="space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Section 5: Projects -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="folder-git-2" class="w-4 h-4 text-blue-600"></i>
+                            Key Projects
+                        </h2>
+                        <button type="button" id="addProjectBtn" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Project
+                        </button>
+                    </div>
+
+                    <div id="projectsList" class="space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Section 6: Education -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="graduation-cap" class="w-4 h-4 text-amber-600"></i>
+                            Education
+                        </h2>
+                        <button type="button" id="addEducationBtn" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                            <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Education
+                        </button>
+                    </div>
+
+                    <div id="educationList" class="space-y-4">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Section 7: Certifications & Achievements -->
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <i data-lucide="award" class="w-4 h-4 text-rose-600"></i>
+                            Certifications &amp; Achievements
+                        </h2>
+                    </div>
+
+                    <div class="space-y-3 text-xs">
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Certifications (One per line: Title | Issuer | Year)</label>
+                            <textarea id="certifications_text" rows="2" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="AWS Certified Solutions Architect | Amazon | 2024"></textarea>
+                        </div>
+                        <div>
+                            <label class="block font-semibold text-slate-700 dark:text-slate-300 mb-1">Achievements / Honors (One per line)</label>
+                            <textarea id="achievements_text" rows="2" class="w-full p-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white" placeholder="First Place in University Hackathon 2024&#10;Published Research Paper in IEEE Conference"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Right Live Preview Column (lg:col-span-6 xl:col-span-7) -->
+            <div class="lg:col-span-6 xl:col-span-7 sticky top-20">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Live Resume Preview (A4)</span>
+                    <span class="text-[11px] text-slate-500 flex items-center gap-1">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Synced
+                    </span>
+                </div>
+
+                <!-- Printable / Preview Sheet Container -->
+                <div class="overflow-x-auto p-1 bg-slate-200/50 dark:bg-slate-900/50 rounded-xl border border-slate-200 dark:border-slate-800 shadow-inner">
+                    <div id="resumePreviewSheet" class="resume-preview-sheet template-modern max-w-[800px] mx-auto text-xs leading-relaxed">
+                        <!-- Dynamically Rendered by builder.js -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/builder.js') }}"></script>
+{% endblock %}

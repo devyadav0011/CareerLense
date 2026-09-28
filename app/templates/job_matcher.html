@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Job Description Matcher — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-12 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+            <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 text-xs font-semibold border border-violet-200 dark:border-violet-800">
+                <i data-lucide="crosshair" class="w-3.5 h-3.5"></i> Target Role Optimization — No Login Required
+            </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight">
+                Match My Resume
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base leading-relaxed">
+                Paste any job description to calculate your estimated match score, detect matched skills, uncover skill gaps, and get personalized tailoring recommendations.
+            </p>
+        </div>
+
+        <!-- Input Section: Job Description Form -->
+        <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="file-text" class="w-4 h-4 text-violet-600"></i>
+                    <h2 class="text-sm font-bold text-slate-900 dark:text-white">Target Job Description</h2>
+                </div>
+                <button type="button" id="loadSampleJobBtn" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
+                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i> Load Sample Software Engineer Job
+                </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="sm:col-span-1">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Target Job Title (Optional)</label>
+                    <input type="text" id="targetJobTitle" class="w-full text-xs px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500" placeholder="e.g. Senior Backend Engineer">
+                </div>
+                <div class="sm:col-span-2">
+                    <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Active Resume Profile</label>
+                    <div id="activeResumeBadge" class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs flex items-center justify-between">
+                        <span id="activeResumeName" class="text-slate-700 dark:text-slate-300 font-medium">Loading active resume...</span>
+                        <a href="{{ url_for('main.builder') }}" class="text-brand-600 dark:text-brand-400 font-semibold hover:underline text-[11px]">Edit Resume</a>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Job Description Requirements *</label>
+                <textarea id="jobDescriptionText" rows="6" class="w-full text-xs p-3.5 rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white focus:ring-2 focus:ring-brand-500 leading-relaxed font-mono" placeholder="Paste full job description, required qualifications, and tech stack requirements here..."></textarea>
+            </div>
+
+            <div class="flex justify-end pt-1">
+                <button type="button" id="analyzeMatchBtn" class="px-6 py-3 rounded-xl text-xs font-bold text-white bg-violet-600 hover:bg-violet-500 shadow-md shadow-violet-500/25 active:scale-95 transition-all flex items-center gap-2">
+                    <i data-lucide="crosshair" class="w-4 h-4"></i>
+                    Analyze Match
+                </button>
+            </div>
+        </div>
+
+        <!-- Match Results Section (Initially hidden until match performed) -->
+        <div id="matchResultsSection" class="hidden space-y-8">
+            
+            <!-- Match Score Banner -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                
+                <!-- Score Metric -->
+                <div class="md:col-span-4 text-center md:text-left space-y-1">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Job Match Score</span>
+                    <div class="flex items-baseline justify-center md:justify-start gap-1">
+                        <span id="matchScoreVal" class="text-5xl font-black text-violet-600 dark:text-violet-400">78</span>
+                        <span class="text-lg font-bold text-slate-400">%</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 max-w-xs leading-relaxed italic">
+                        Estimated match based on the provided resume and job description. Does not claim employment probability.
+                    </p>
+                </div>
+
+                <!-- 5 Breakdown Pills (Section 31 Spec) -->
+                <div class="md:col-span-8 grid grid-cols-2 sm:grid-cols-5 gap-2.5 text-center text-xs">
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Skills</span>
+                        <span id="bd_skills" class="text-base font-black text-slate-800 dark:text-slate-200">82%</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Experience</span>
+                        <span id="bd_exp" class="text-base font-black text-slate-800 dark:text-slate-200">71%</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Projects</span>
+                        <span id="bd_proj" class="text-base font-black text-slate-800 dark:text-slate-200">84%</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Keywords</span>
+                        <span id="bd_kw" class="text-base font-black text-slate-800 dark:text-slate-200">76%</span>
+                    </div>
+                    <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700">
+                        <span class="text-slate-400 block text-[10px] uppercase font-bold">Education</span>
+                        <span id="bd_edu" class="text-base font-black text-slate-800 dark:text-slate-200">90%</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Skills & Gaps Dual Card: Matched Skills vs Missing Skills -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- Matched Skills (Section 32 Spec) -->
+                <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-emerald-500/20 shadow-sm space-y-3">
+                    <div class="flex items-center gap-2 text-emerald-600 dark:text-emerald-400 font-bold text-sm">
+                        <div class="w-6 h-6 rounded-full bg-emerald-100 dark:bg-emerald-950 flex items-center justify-center text-xs">✓</div>
+                        <span>Matched Skills in Your Resume</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400">
+                        These requirements from the job posting are verified in your resume profile:
+                    </p>
+                    <div id="matchedSkillsList" class="flex flex-wrap gap-2 pt-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Missing / Weak Skills (Section 33 Spec) -->
+                <div class="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-amber-500/20 shadow-sm space-y-3">
+                    <div class="flex items-center gap-2 text-amber-600 dark:text-amber-400 font-bold text-sm">
+                        <div class="w-6 h-6 rounded-full bg-amber-100 dark:bg-amber-950 flex items-center justify-center text-xs">⚠</div>
+                        <span>Missing / Weak Skills</span>
+                    </div>
+                    <div class="p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-[11px] text-amber-800 dark:text-amber-300 font-medium">
+                        <strong>Important:</strong> Consider adding these skills <em>only if they accurately reflect your real background</em>.
+                    </div>
+                    <div id="missingSkillsList" class="flex flex-wrap gap-2 pt-1">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Keyword Analysis Table (Section 34 Spec) -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="tag" class="w-4 h-4 text-brand-600"></i>
+                        Job Keyword Analysis
+                    </h2>
+                    <span class="text-xs text-slate-400">Matched vs Missing Frequency</span>
+                </div>
+                <div id="keywordAnalysisContainer" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 text-xs">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+            <!-- Job-Specific Recommendations (Section 35 Spec) -->
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <h2 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <i data-lucide="check-circle" class="w-4 h-4 text-violet-600"></i>
+                        Top Improvements for This Job
+                    </h2>
+                    <a href="{{ url_for('main.improver') }}" class="text-xs font-bold text-violet-600 dark:text-violet-400 hover:underline flex items-center gap-1">
+                        Open AI Rewriter <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                    </a>
+                </div>
+                <div id="jobRecommendationsContainer" class="space-y-2.5 text-xs text-slate-700 dark:text-slate-300">
+                    <!-- Populated by JS -->
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/job_matcher.js') }}"></script>
+{% endblock %}

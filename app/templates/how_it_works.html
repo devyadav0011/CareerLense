@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}How It Works — CareerLense{% endblock %}
+
+{% block content %}
+<div class="py-16 bg-slate-50 dark:bg-slate-950">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto mb-16">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Architecture &amp; Methodology</span>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight mt-2">
+                How CareerLense Evaluates Your Resume
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base mt-3 leading-relaxed">
+                We believe in transparency. No mysterious algorithms or false promises. Here is exactly how our platform reads, scores, and refines your career materials.
+            </p>
+        </div>
+
+        <!-- 4-Step Breakdown -->
+        <div class="space-y-8 mb-16">
+            
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
+                <div class="w-12 h-12 rounded-2xl bg-brand-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-md shadow-brand-500/30">
+                    1
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Text &amp; Structure Extraction</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        When you upload a PDF or DOCX file, our dual parsing engine extracts clean, selectable text and inspects layout boundaries. We detect email addresses, phone formats, LinkedIn &amp; GitHub links, and identify standard section boundaries (Education, Experience, Skills, Projects, Summary).
+                    </p>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
+                <div class="w-12 h-12 rounded-2xl bg-indigo-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-md shadow-indigo-500/30">
+                    2
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Multi-Dimensional Quality Scoring</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        We calculate the <strong>Estimated Resume Quality Score (0 - 100)</strong> using published weights:
+                    </p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2 text-xs">
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"><strong>Content Quality:</strong> 20%</div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"><strong>Skills Coverage:</strong> 15%</div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"><strong>Projects:</strong> 15%</div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"><strong>Experience:</strong> 15%</div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"><strong>Completeness:</strong> 15%</div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"><strong>Education:</strong> 10%</div>
+                        <div class="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700"><strong>Formatting:</strong> 10%</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
+                <div class="w-12 h-12 rounded-2xl bg-violet-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-md shadow-violet-500/30">
+                    3
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">ATS-Style Readability Analysis</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        Applicant Tracking Systems often reject documents that cannot be parsed into database columns. Our scanner tests for non-standard headings, complex tables, non-ASCII characters, and word density.
+                    </p>
+                    <p class="text-xs text-slate-400 italic">
+                        *Important: This is an estimated ATS-style readability indicator, not a guarantee of ATS performance or selection.
+                    </p>
+                </div>
+            </div>
+
+            <div class="p-6 sm:p-8 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col sm:flex-row gap-6 items-start">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-black text-lg flex items-center justify-center shrink-0 shadow-md shadow-emerald-500/30">
+                    4
+                </div>
+                <div class="space-y-2">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Ethical AI Assistance &amp; Export</h3>
+                    <p class="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                        CareerLense AI strictly follows accuracy safeguards: it never invents jobs, fake degrees, or false metrics. If a description lacks numbers, it prompts: <em>"Add a measurable result if you have one."</em> You can export your optimized resume directly to PDF or print it.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Privacy Callout -->
+        <div class="p-6 rounded-2xl bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800 text-center space-y-2">
+            <h4 class="font-bold text-sm text-brand-900 dark:text-brand-300">Privacy-First Architecture</h4>
+            <p class="text-xs text-brand-700 dark:text-brand-400 max-w-xl mx-auto leading-relaxed">
+                You do not need to register or log in. Uploaded files are stored temporarily in session memory and can be cleared instantly using the "Clear Session / Delete Resume" button.
+            </p>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
