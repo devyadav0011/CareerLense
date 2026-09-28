@@ -32,7 +32,10 @@ def create_app(config_class=Config):
             'app_name': 'CareerLense',
             'tagline': 'See Your Career Clearly.',
             'secondary_tagline': 'Build. Analyze. Improve.',
-            'no_login_badge': 'No Login Required'
+            'no_login_badge': 'No Login Required',
+            'logo_path': '/static/images/careerlense-logo.png',
+            'icon_path': '/static/images/careerlense-icon.png',
+            'favicon_path': '/static/favicon.ico'
         }
 
     # Custom Error Handlers (Never expose stack traces, user-friendly messages)
@@ -49,7 +52,7 @@ def create_app(config_class=Config):
     def not_found(error):
         if getattr(error, 'description', None) and 'api' in str(error):
             return jsonify({'error': 'Resource not found.'}), 404
-        return render_template('base.html', not_found=True), 404
+        return render_template('404.html'), 404
 
     @app.errorhandler(413)
     def request_entity_too_large(error):

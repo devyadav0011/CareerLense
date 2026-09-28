@@ -8,9 +8,14 @@
         
         <!-- Header -->
         <div class="flex flex-wrap items-center justify-between gap-4 p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm">
-            <div>
-                <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Saved Resumes</h1>
-                <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Manage resumes permanently stored in your optional account.</p>
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-white p-0.5 shadow-xs border border-slate-200 dark:border-slate-700 shrink-0 flex items-center justify-center">
+                    <img src="{{ icon_path }}" alt="CareerLense" class="w-full h-full object-contain">
+                </div>
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-900 dark:text-white">Saved Resumes</h1>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Manage resumes permanently stored in your optional account.</p>
+                </div>
             </div>
             <div class="flex items-center gap-2">
                 <button type="button" id="saveCurrentSessionBtn" class="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 shadow-sm flex items-center gap-1.5">

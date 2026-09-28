@@ -5,7 +5,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.units import inch, cm
 from reportlab.platypus import (
-    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable, KeepTogether, PageBreak
+    SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, HRFlowable, KeepTogether, PageBreak, Image as RLImage
 )
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_RIGHT, TA_JUSTIFY
@@ -404,6 +404,18 @@ class PDFService:
         )
 
         story = []
+
+        # Official Brand Logo
+        logo_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'static', 'images', 'careerlense-logo.png'))
+        if os.path.exists(logo_path):
+            try:
+                # Add logo centered at 1.4 inches width maintaining aspect ratio
+                logo_img = RLImage(logo_path, width=1.4*inch, height=1.09*inch)
+                logo_img.hAlign = 'CENTER'
+                story.append(logo_img)
+                story.append(Spacer(1, 4))
+            except Exception:
+                pass
 
         # Header
         story.append(Paragraph("CareerLense — Resume Quality & ATS Analysis Report", title_style))

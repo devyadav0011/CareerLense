@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}404 - Page Not Found — CareerLense{% endblock %}
+
+{% block content %}
+<div class="min-h-[70vh] flex items-center justify-center px-4 py-16">
+    <div class="max-w-md w-full text-center space-y-6">
+        <!-- Logo -->
+        <div class="inline-flex p-3 rounded-2xl bg-white dark:bg-white shadow-md border border-slate-200/80 dark:border-slate-800">
+            <img src="{{ logo_path }}" alt="CareerLense" class="h-16 w-auto object-contain">
+        </div>
+        
+        <div class="space-y-2">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-rose-100 dark:bg-rose-950/50 text-rose-700 dark:text-rose-400 border border-rose-200 dark:border-rose-800">
+                Error 404
+            </span>
+            <h1 class="text-3xl font-extrabold text-slate-900 dark:text-white">Page Not Found</h1>
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+                The career page or tool you are looking for doesn't exist or has been relocated.
+            </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+            <a href="{{ url_for('main.index') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-white bg-brand-600 hover:bg-brand-500 shadow-md shadow-brand-500/20 transition-all">
+                <i data-lucide="home" class="w-4 h-4"></i>
+                Return Home
+            </a>
+            <a href="{{ url_for('main.analyzer') }}" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-xs text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-all">
+                <i data-lucide="scan" class="w-4 h-4"></i>
+                Try Resume Analyzer
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

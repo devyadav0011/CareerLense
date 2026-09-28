@@ -4,15 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}CareerLense — See Your Career Clearly{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}CareerLense helps you build, analyze, improve, and match your resume with jobs using AI-powered insights.{% endblock %}">
+    <meta name="description" content="{% block meta_description %}CareerLense is an AI-powered resume builder, resume analyzer, and job matching platform.{% endblock %}">
+    
+    <!-- Favicon and Brand Icons -->
+    <link rel="icon" type="image/x-icon" href="{{ favicon_path }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
     
     <!-- Open Graph SEO -->
     <meta property="og:title" content="CareerLense — See Your Career Clearly">
-    <meta property="og:description" content="AI-powered career and resume platform. Build, analyze, improve, and match your resume with jobs without login.">
+    <meta property="og:description" content="CareerLense is an AI-powered resume builder, resume analyzer, and job matching platform.">
+    <meta property="og:image" content="{{ url_for('static', filename='images/careerlense-logo.png', _external=True) }}">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="CareerLense">
     
-    <!-- Tailwind CSS CDN with configuration -->
+    <!-- Tailwind CSS CDN with configuration matching official logo palette -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -36,7 +43,17 @@
                         navy: {
                             800: '#1E293B',
                             900: '#0F172A',
-                            950: '#020617',
+                            950: '#0A1128',
+                        },
+                        tealAccent: {
+                            400: '#2DD4BF',
+                            500: '#14B8A6',
+                            600: '#0D9488',
+                        },
+                        cyanAccent: {
+                            400: '#38BDF8',
+                            500: '#0EA5E9',
+                            600: '#0284C7',
                         }
                     }
                 }
@@ -80,24 +97,16 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 
-                <!-- Logo & Brand -->
-                <a href="{{ url_for('main.index') }}" class="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-lg p-1">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 via-indigo-600 to-violet-500 flex items-center justify-center text-white shadow-md shadow-brand-500/20 group-hover:scale-105 transition-transform duration-200">
-                        <!-- Custom Lens + Career Growth AI Icon -->
-                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="11" cy="11" r="7"></circle>
-                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                            <path d="M11 8v6"></path>
-                            <path d="M8 11h6"></path>
-                            <circle cx="11" cy="11" r="1.5" fill="currentColor"></circle>
-                        </svg>
+                <!-- Official CareerLense Logo (Desktop: Full Logo 36-42px; Mobile: Compact Icon + Wordmark) -->
+                <a href="{{ url_for('main.index') }}" class="flex items-center group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-xl" aria-label="CareerLense — See Your Career Clearly">
+                    <!-- Mobile view: Compact Icon + Wordmark -->
+                    <div class="flex items-center sm:hidden bg-white dark:bg-white/95 px-2 py-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-300">
+                        <img src="{{ icon_path }}" alt="CareerLense" class="h-8 w-8 object-contain" />
+                        <span class="ml-1.5 font-bold text-sm text-slate-900 tracking-tight">CareerLense</span>
                     </div>
-                    <div class="flex flex-col">
-                        <span class="text-xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5">
-                            CareerLense
-                            <span class="text-[10px] uppercase font-bold tracking-wider px-1.5 py-0.5 bg-brand-100 dark:bg-brand-900/60 text-brand-700 dark:text-brand-300 rounded border border-brand-200 dark:border-brand-800">AI</span>
-                        </span>
-                        <span class="text-[10px] text-slate-500 dark:text-slate-400 font-medium tracking-tight -mt-0.5">See Your Career Clearly</span>
+                    <!-- Desktop / Tablet view: Full Official Brand Logo (36–42px height, optimal contrast container) -->
+                    <div class="hidden sm:flex items-center bg-white dark:bg-white/95 px-2.5 py-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-300 group-hover:shadow-md transition-all">
+                        <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" class="h-9 md:h-10 w-auto max-w-[200px] object-contain" />
                     </div>
                 </a>
 
@@ -206,8 +215,8 @@
         <!-- Drawer Header -->
         <div class="px-5 py-4 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-brand-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800/80">
             <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 rounded-lg bg-brand-600 text-white flex items-center justify-center shadow-sm">
-                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                <div class="w-8 h-8 rounded-lg bg-white p-0.5 shadow-sm border border-slate-200 dark:border-slate-700 shrink-0 flex items-center justify-center">
+                    <img src="{{ icon_path }}" alt="CareerLense AI" class="w-full h-full object-contain" />
                 </div>
                 <div>
                     <h3 class="font-bold text-sm text-slate-900 dark:text-white">CareerLense AI</h3>
@@ -235,8 +244,8 @@
         <!-- Chat Messages Area -->
         <div id="aiChatMessages" class="flex-grow p-4 overflow-y-auto space-y-3.5 text-xs">
             <div class="flex gap-2.5">
-                <div class="w-7 h-7 rounded-lg bg-brand-600/10 text-brand-600 dark:text-brand-400 flex items-center justify-center shrink-0">
-                    <i data-lucide="bot" class="w-4 h-4"></i>
+                <div class="w-7 h-7 rounded-lg bg-white p-0.5 border border-slate-200 dark:border-slate-700 shrink-0 flex items-center justify-center">
+                    <img src="{{ icon_path }}" alt="AI" class="w-full h-full object-contain" />
                 </div>
                 <div class="p-3 rounded-2xl rounded-tl-sm bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 max-w-[85%] leading-relaxed">
                     Hello! I'm <strong>CareerLense AI</strong>. Ask me anything about improving your resume bullets, identifying skill gaps, or tailoring for specific job positions.
@@ -262,20 +271,21 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 
-                <!-- Col 1: Brand Info -->
-                <div class="space-y-4 md:col-span-1">
-                    <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-violet-600 flex items-center justify-center text-white">
-                            <i data-lucide="eye" class="w-4 h-4"></i>
+                <!-- Col 1: Brand Info (Footer logo smaller than navbar, official logo) -->
+                <div class="space-y-3 md:col-span-1">
+                    <a href="{{ url_for('main.index') }}" class="inline-block" aria-label="CareerLense">
+                        <div class="inline-flex items-center bg-white dark:bg-white/95 px-2.5 py-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-300">
+                            <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" class="h-7 w-auto object-contain" />
                         </div>
-                        <span class="text-lg font-bold text-slate-900 dark:text-white">CareerLense</span>
+                    </a>
+                    <div class="space-y-0.5">
+                        <p class="text-xs font-semibold text-slate-800 dark:text-slate-200">See Your Career Clearly.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400">Build. Analyze. Improve.</p>
                     </div>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                        “See Your Career Clearly.”<br>
-                        AI-powered career and resume platform. Build better resumes, understand your strengths, and close skill gaps.
-                    </p>
-                    <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold border border-emerald-200 dark:border-emerald-800">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> No Login Required
+                    <div class="pt-1">
+                        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-[11px] font-semibold border border-emerald-200 dark:border-emerald-800">
+                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> No Login Required
+                        </div>
                     </div>
                 </div>
 
