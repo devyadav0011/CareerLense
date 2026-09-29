@@ -1,6 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Analyze Your Resume — CareerLense{% endblock %}
+{% block title %}Free AI Resume Analyzer &amp; Score Checker — Instant Feedback | CareerLense{% endblock %}
+
+{% block meta_description %}Upload your PDF or DOCX resume for instant AI analysis. Get an estimated Resume Score, ATS readability breakdown, strengths, and section-by-section improvements.{% endblock %}
+
+{% block canonical_url %}<link rel="canonical" href="https://careerlense.xyz/resume-analyzer">{% endblock %}
+
+{% block og_title %}<meta property="og:title" content="Free AI Resume Analyzer &amp; Score Checker — Instant Feedback | CareerLense">{% endblock %}
+{% block og_description %}<meta property="og:description" content="Upload your PDF or DOCX resume for instant AI analysis. Get an estimated Resume Score and ATS readability breakdown.">{% endblock %}
+{% block og_url %}<meta property="og:url" content="https://careerlense.xyz/resume-analyzer">{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CareerLense Free AI Resume Analyzer",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://careerlense.xyz/resume-analyzer",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Free AI resume analyzer evaluating PDF and DOCX resumes for ATS compliance, content quality, keyword density, and section completeness."
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="py-16 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">

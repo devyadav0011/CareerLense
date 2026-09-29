@@ -3,21 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}CareerLense — See Your Career Clearly{% endblock %}</title>
-    <meta name="description" content="{% block meta_description %}CareerLense is an AI-powered resume builder, resume analyzer, and job matching platform.{% endblock %}">
+    <title>{% block title %}CareerLense — Free AI Resume Builder, Resume Analyzer &amp; ATS Checker{% endblock %}</title>
+    <meta name="description" content="{% block meta_description %}CareerLense is a free AI-powered career platform: build ATS-friendly resumes, analyze resume quality score, test ATS readability, and match job descriptions.{% endblock %}">
     
+    <!-- Search Engine Indexing Directives -->
+    {% block meta_robots %}
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    {% endblock %}
+
+    <!-- Canonical URL (Always defaults to canonical_base https://careerlense.xyz) -->
+    {% block canonical_url %}
+    <link rel="canonical" href="{{ canonical_base }}{{ request.path }}">
+    {% endblock %}
+
+    <!-- Open Graph Social Sharing -->
+    {% block og_title %}<meta property="og:title" content="CareerLense — See Your Career Clearly">{% endblock %}
+    {% block og_description %}<meta property="og:description" content="Build better resumes, analyze ATS readability, and match job descriptions with free AI tools.">{% endblock %}
+    {% block og_url %}<meta property="og:url" content="{{ canonical_base }}{{ request.path }}">{% endblock %}
+    {% block og_image %}<meta property="og:image" content="{{ og_image_url }}">{% endblock %}
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="CareerLense — See Your Career Clearly. Build. Analyze. Improve.">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="CareerLense">
+    <meta property="og:locale" content="en_US">
+
+    <!-- Twitter Card -->
+    {% block twitter_card %}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="CareerLense — See Your Career Clearly">
+    <meta name="twitter:description" content="Free AI resume builder, resume analyzer, ATS readability checker, and job match platform.">
+    <meta name="twitter:image" content="{{ og_image_url }}">
+    <meta name="twitter:image:alt" content="CareerLense — See Your Career Clearly">
+    {% endblock %}
+
+    <!-- Structured Data (JSON-LD) -->
+    {% block structured_data %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "name": "CareerLense",
+          "url": "https://careerlense.xyz/",
+          "logo": "https://careerlense.xyz/static/images/careerlense-logo.png",
+          "description": "Free AI-powered resume builder, resume analyzer, ATS checker, and job matching platform."
+        },
+        {
+          "@type": "WebSite",
+          "name": "CareerLense",
+          "url": "https://careerlense.xyz/",
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": "https://careerlense.xyz/resume-builder"
+          }
+        }
+      ]
+    }
+    </script>
+    {% endblock %}
+
     <!-- Favicon and Brand Icons -->
     <link rel="icon" type="image/x-icon" href="{{ favicon_path }}">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='images/favicon-32x32.png') }}">
     <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='images/favicon-16x16.png') }}">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='images/apple-touch-icon.png') }}">
-    
-    <!-- Open Graph SEO -->
-    <meta property="og:title" content="CareerLense — See Your Career Clearly">
-    <meta property="og:description" content="CareerLense is an AI-powered resume builder, resume analyzer, and job matching platform.">
-    <meta property="og:image" content="{{ url_for('static', filename='images/careerlense-logo.png', _external=True) }}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="CareerLense">
     
     <!-- Tailwind CSS CDN with configuration matching official logo palette -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -63,8 +115,9 @@
 
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Optional Head Scripts Block (Chart.js loaded on-demand for CWV) -->
+    {% block head_scripts %}{% endblock %}
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
@@ -101,12 +154,12 @@
                 <a href="{{ url_for('main.index') }}" class="flex items-center group focus:outline-none focus:ring-2 focus:ring-brand-500 rounded-xl" aria-label="CareerLense — See Your Career Clearly">
                     <!-- Mobile view: Compact Icon + Wordmark -->
                     <div class="flex items-center sm:hidden bg-white dark:bg-white/95 px-2 py-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-300">
-                        <img src="{{ icon_path }}" alt="CareerLense" class="h-8 w-8 object-contain" />
+                        <img src="{{ icon_path }}" alt="CareerLense" width="32" height="32" class="h-8 w-8 object-contain" />
                         <span class="ml-1.5 font-bold text-sm text-slate-900 tracking-tight">CareerLense</span>
                     </div>
                     <!-- Desktop / Tablet view: Full Official Brand Logo (36–42px height, optimal contrast container) -->
                     <div class="hidden sm:flex items-center bg-white dark:bg-white/95 px-2.5 py-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-300 group-hover:shadow-md transition-all">
-                        <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" class="h-9 md:h-10 w-auto max-w-[200px] object-contain" />
+                        <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" width="168" height="40" class="h-9 md:h-10 w-auto max-w-[200px] object-contain" />
                     </div>
                 </a>
 
@@ -271,11 +324,11 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 
-                <!-- Col 1: Brand Info (Footer logo smaller than navbar, official logo) -->
+                <!-- Col 1: Brand Info (Footer logo with explicit dimensions) -->
                 <div class="space-y-3 md:col-span-1">
                     <a href="{{ url_for('main.index') }}" class="inline-block" aria-label="CareerLense">
                         <div class="inline-flex items-center bg-white dark:bg-white/95 px-2.5 py-1 rounded-xl shadow-xs border border-slate-200/80 dark:border-slate-300">
-                            <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" class="h-7 w-auto object-contain" />
+                            <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" width="126" height="28" class="h-7 w-auto object-contain" />
                         </div>
                     </a>
                     <div class="space-y-0.5">
@@ -289,15 +342,16 @@
                     </div>
                 </div>
 
-                <!-- Col 2: Core Tools -->
+                <!-- Col 2: Core Tools (All SEO-targeted landing pages) -->
                 <div>
-                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Tools</h4>
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Free Tools</h4>
                     <ul class="space-y-2 text-xs text-slate-600 dark:text-slate-400">
                         <li><a href="{{ url_for('main.builder') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Resume Builder</a></li>
                         <li><a href="{{ url_for('main.analyzer') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Resume Analyzer</a></li>
+                        <li><a href="{{ url_for('main.ats_resume_checker') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">ATS Resume Checker</a></li>
                         <li><a href="{{ url_for('main.job_matcher') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Job Description Matcher</a></li>
+                        <li><a href="{{ url_for('main.skill_gap_analysis') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Skill Gap Analysis</a></li>
                         <li><a href="{{ url_for('main.improver') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">AI Resume Rewriter</a></li>
-                        <li><a href="{{ url_for('main.results') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Resume Score &amp; ATS</a></li>
                     </ul>
                 </div>
 
@@ -309,6 +363,8 @@
                         <li><a href="{{ url_for('main.how_it_works') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">How It Works</a></li>
                         <li><a href="{{ url_for('main.about') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">About Us</a></li>
                         <li><a href="{{ url_for('main.saved_resumes') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Saved Resumes</a></li>
+                        <li><a href="{{ url_for('main.history') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Analysis History</a></li>
+                        <li><a href="{{ url_for('main.sitemap_xml') }}" class="hover:text-brand-600 dark:hover:text-brand-400 transition-colors">Sitemap (XML)</a></li>
                     </ul>
                 </div>
 
@@ -316,7 +372,7 @@
                 <div>
                     <h4 class="text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-white mb-3">Privacy &amp; Trust</h4>
                     <p class="text-xs text-slate-500 dark:text-slate-400 mb-3 leading-relaxed">
-                        Your resume is processed temporarily and is not permanently stored unless you choose to save it.
+                        Your resume is processed temporarily in memory and is not permanently stored unless you choose to save it.
                     </p>
                     <div class="flex flex-col gap-2 text-xs">
                         <button onclick="window.CareerLense.clearSession()" class="inline-flex items-center gap-1.5 text-rose-600 dark:text-rose-400 hover:underline">

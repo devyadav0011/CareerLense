@@ -1,6 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Resume Builder — CareerLense{% endblock %}
+{% block title %}Free AI Resume Builder — Create ATS-Friendly Resumes Online | CareerLense{% endblock %}
+
+{% block meta_description %}Build a modern, ATS-optimized resume from scratch in minutes. Choose professional templates, receive real-time AI bullet suggestions, and export to PDF free.{% endblock %}
+
+{% block canonical_url %}<link rel="canonical" href="https://careerlense.xyz/resume-builder">{% endblock %}
+
+{% block og_title %}<meta property="og:title" content="Free AI Resume Builder — Create ATS-Friendly Resumes Online | CareerLense">{% endblock %}
+{% block og_description %}<meta property="og:description" content="Build a modern, ATS-optimized resume from scratch in minutes. Choose professional templates and export to PDF free.">{% endblock %}
+{% block og_url %}<meta property="og:url" content="https://careerlense.xyz/resume-builder">{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CareerLense Free AI Resume Builder",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://careerlense.xyz/resume-builder",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "Interactive online resume builder with live ATS formatting preview, real-time AI bullet improvement suggestions, and free PDF export."
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="py-8 bg-slate-100/70 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">

@@ -33,10 +33,23 @@ def create_app(config_class=Config):
             'tagline': 'See Your Career Clearly.',
             'secondary_tagline': 'Build. Analyze. Improve.',
             'no_login_badge': 'No Login Required',
+            'canonical_base': 'https://careerlense.xyz',
+            'og_image_url': 'https://careerlense.xyz/static/images/careerlense-og.png',
             'logo_path': '/static/images/careerlense-logo.png',
             'icon_path': '/static/images/careerlense-icon.png',
             'favicon_path': '/static/favicon.ico'
         }
+
+    # Technical SEO: 301 redirect from Render host to canonical domain
+    @app.before_request
+    def redirect_render_domain():
+        from flask import request, redirect
+        host = request.host.split(':')[0].lower()
+        if host == 'careerlense-wtv4.onrender.com':
+            target_url = f"https://careerlense.xyz{request.full_path}"
+            if target_url.endswith('?'):
+                target_url = target_url[:-1]
+            return redirect(target_url, code=301)
 
     # Custom Error Handlers (Never expose stack traces, user-friendly messages)
     @app.errorhandler(400)

@@ -1,6 +1,90 @@
 {% extends "base.html" %}
 
-{% block title %}CareerLense — See Your Career Clearly | AI Resume & Career Platform{% endblock %}
+{% block title %}CareerLense — Free AI Resume Builder, Resume Analyzer &amp; ATS Checker{% endblock %}
+
+{% block meta_description %}Build professional ATS-friendly resumes, analyze your resume quality score, test ATS readability, and match job descriptions for free with CareerLense.{% endblock %}
+
+{% block canonical_url %}<link rel="canonical" href="https://careerlense.xyz/">{% endblock %}
+
+{% block og_title %}<meta property="og:title" content="CareerLense — Free AI Resume Builder, Resume Analyzer &amp; ATS Checker">{% endblock %}
+{% block og_description %}<meta property="og:description" content="Build professional ATS-friendly resumes, analyze your resume quality score, test ATS readability, and match job descriptions for free with CareerLense.">{% endblock %}
+{% block og_url %}<meta property="og:url" content="https://careerlense.xyz/">{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "CareerLense",
+      "url": "https://careerlense.xyz/",
+      "logo": "https://careerlense.xyz/static/images/careerlense-logo.png",
+      "description": "Free AI-powered resume builder, resume analyzer, ATS checker, and job match platform."
+    },
+    {
+      "@type": "WebSite",
+      "name": "CareerLense",
+      "url": "https://careerlense.xyz/",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://careerlense.xyz/resume-builder"
+      }
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "CareerLense",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "url": "https://careerlense.xyz/",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free AI-powered resume builder, PDF/DOCX resume analyzer, ATS readability score checker, and job match platform."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is CareerLense?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CareerLense is a free AI-powered career platform providing an interactive resume builder, PDF/DOCX resume analyzer, ATS readability scoring, job description matching, and AI bullet rewriter."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is CareerLense completely free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, CareerLense core tools are 100% free with no login, subscription, or credit card required. You can build, analyze, and download your resumes anonymously."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How does the Resume Analyzer evaluate resumes?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "CareerLense uses an intelligent multi-layer parser to evaluate content quality, detect technical and soft skills, measure ATS readability, evaluate formatting, and generate an estimated Resume Score out of 100."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does CareerLense store my resume permanently?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Resumes are processed ephemerally in memory during your active browser session. Resumes are not stored permanently on our servers unless you explicitly create an account to save them."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <!-- Hero Section with Radial Glow -->
@@ -14,7 +98,7 @@
                 <!-- Official Brand Identity & No-Login Badge -->
                 <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
                     <div class="inline-flex items-center bg-white dark:bg-white/95 px-3.5 py-1.5 rounded-2xl shadow-sm border border-slate-200/80 dark:border-slate-300">
-                        <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" class="h-11 sm:h-12 w-auto object-contain" />
+                        <img src="{{ logo_path }}" alt="CareerLense — See Your Career Clearly" width="180" height="40" class="h-11 sm:h-12 w-auto object-contain" />
                     </div>
                     <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-brand-50 dark:bg-brand-950/60 border border-brand-200 dark:border-brand-800 text-xs font-semibold text-brand-700 dark:text-brand-300 shadow-xs">
                         <span class="flex h-2 w-2 relative">
@@ -25,16 +109,16 @@
                     </div>
                 </div>
 
-                <!-- Main Heading -->
+                <!-- Main Heading (SEO Target: Free AI Resume Builder & Career Platform) -->
                 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.15]">
-                    See Your Career <br class="hidden sm:inline">
-                    <span class="gradient-text">Clearly.</span>
+                    Free AI Resume Builder &amp; <br class="hidden sm:inline">
+                    <span class="gradient-text">Career Platform</span>
                 </h1>
 
                 <!-- Secondary Subheading -->
                 <p class="text-lg sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl font-normal leading-relaxed mx-auto lg:mx-0">
-                    <strong class="font-semibold text-slate-800 dark:text-slate-200">Build. Analyze. Improve.</strong><br>
-                    Build better resumes, understand your strengths, identify skill gaps, and improve your resume with AI-powered insights.
+                    <strong class="font-semibold text-slate-800 dark:text-slate-200">See Your Career Clearly. Build. Analyze. Improve.</strong><br>
+                    Build ATS-friendly resumes from scratch, check your resume score, test ATS readability, detect skill gaps, and rewrite bullet points with AI.
                 </p>
 
                 <!-- Action Buttons -->
@@ -371,6 +455,63 @@
             </div>
         </div>
 
+    </div>
+</section>
+
+<!-- Frequently Asked Questions Section (Matches JSON-LD Schema) -->
+<section class="py-16 bg-slate-50 dark:bg-slate-950 border-t border-slate-200/80 dark:border-slate-800">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div class="text-center space-y-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-brand-600 dark:text-brand-400">Common Questions</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
+                Frequently Asked Questions
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                Everything you need to know about building, analyzing, and improving your resume with CareerLense.
+            </p>
+        </div>
+
+        <div class="space-y-3">
+            <details class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm cursor-pointer" open>
+                <summary class="font-bold text-sm text-slate-900 dark:text-white flex items-center justify-between list-none">
+                    <span>What is CareerLense?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="mt-2.5 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    CareerLense is a free AI-powered career platform providing an interactive resume builder, PDF/DOCX resume analyzer, ATS readability scoring, job description matching, and AI bullet rewriter.
+                </p>
+            </details>
+
+            <details class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm cursor-pointer">
+                <summary class="font-bold text-sm text-slate-900 dark:text-white flex items-center justify-between list-none">
+                    <span>Is CareerLense completely free to use?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="mt-2.5 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    Yes, CareerLense core tools are 100% free with no login, subscription, or credit card required. You can build, analyze, and download your resumes anonymously.
+                </p>
+            </details>
+
+            <details class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm cursor-pointer">
+                <summary class="font-bold text-sm text-slate-900 dark:text-white flex items-center justify-between list-none">
+                    <span>How does the Resume Analyzer evaluate resumes?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="mt-2.5 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    CareerLense uses an intelligent multi-layer parser to evaluate content quality, detect technical and soft skills, measure ATS readability, evaluate formatting, and generate an estimated Resume Score out of 100.
+                </p>
+            </details>
+
+            <details class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm cursor-pointer">
+                <summary class="font-bold text-sm text-slate-900 dark:text-white flex items-center justify-between list-none">
+                    <span>Does CareerLense store my resume permanently?</span>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                </summary>
+                <p class="mt-2.5 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    No. Resumes are processed ephemerally in memory during your active browser session. Resumes are not stored permanently on our servers unless you explicitly create an account to save them.
+                </p>
+            </details>
+        </div>
     </div>
 </section>
 

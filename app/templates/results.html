@@ -2,6 +2,10 @@
 
 {% block title %}Resume Analysis Results — CareerLense{% endblock %}
 
+{% block meta_robots %}
+<meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
 {% block content %}
 <div class="py-10 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
@@ -191,5 +195,6 @@
 {% endblock %}
 
 {% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{{ url_for('static', filename='js/results.js') }}"></script>
 {% endblock %}

@@ -1,6 +1,33 @@
 {% extends "base.html" %}
 
-{% block title %}Job Description Matcher — CareerLense{% endblock %}
+{% block title %}Job Description Matcher &amp; Keyword Gap Analysis | CareerLense{% endblock %}
+
+{% block meta_description %}Compare your resume against any job description. Get an instant Job Match Score, see missing skills and required keywords, and tailor your application.{% endblock %}
+
+{% block canonical_url %}<link rel="canonical" href="https://careerlense.xyz/job-matcher">{% endblock %}
+
+{% block og_title %}<meta property="og:title" content="Job Description Matcher &amp; Keyword Gap Analysis | CareerLense">{% endblock %}
+{% block og_description %}<meta property="og:description" content="Compare your resume against any job description. Get an instant Job Match Score, see missing skills, and tailor your application.">{% endblock %}
+{% block og_url %}<meta property="og:url" content="https://careerlense.xyz/job-matcher">{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "CareerLense Job Description Matcher",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web Browser",
+  "url": "https://careerlense.xyz/job-matcher",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "AI-powered job description matcher comparing resumes to job postings, calculating percentage match scores, and detecting missing keyword requirements."
+}
+</script>
+{% endblock %}
 
 {% block content %}
 <div class="py-12 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">

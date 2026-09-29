@@ -192,3 +192,101 @@ def test_auth_save_and_manage_resumes(client, sample_resume_data):
     resumes2 = res_list2.get_json()['resumes']
     assert not any(r['id'] == resume_id for r in resumes2)
 
+
+def test_seo_routes_and_canonicals(client):
+    landing_pages = [
+        ('/', 'https://careerlense.xyz/'),
+        ('/resume-builder', 'https://careerlense.xyz/resume-builder'),
+        ('/builder', 'https://careerlense.xyz/resume-builder'),
+        ('/resume-analyzer', 'https://careerlense.xyz/resume-analyzer'),
+        ('/analyzer', 'https://careerlense.xyz/resume-analyzer'),
+        ('/ats-resume-checker', 'https://careerlense.xyz/ats-resume-checker'),
+        ('/job-matcher', 'https://careerlense.xyz/job-matcher'),
+        ('/skill-gap-analysis', 'https://careerlense.xyz/skill-gap-analysis'),
+        ('/ai-resume-writer', 'https://careerlense.xyz/ai-resume-writer'),
+        ('/improver', 'https://careerlense.xyz/ai-resume-writer'),
+        ('/features', 'https://careerlense.xyz/features'),
+        ('/how-it-works', 'https://careerlense.xyz/how-it-works'),
+        ('/about', 'https://careerlense.xyz/about'),
+        ('/privacy', 'https://careerlense.xyz/privacy'),
+        ('/terms', 'https://careerlense.xyz/terms'),
+    ]
+    for path, expected_canonical in landing_pages:
+        res = client.get(path)
+        assert res.status_code == 200
+        html = res.data.decode('utf-8')
+        assert f'<link rel="canonical" href="{expected_canonical}">' in html
+        assert 'CareerLense' in html
+        assert 'name="description"' in html
+        assert 'property="og:title"' in html
+        assert 'property="og:image"' in html
+        assert 'careerlense-og.png' in html
+
+
+def test_robots_txt(client):
+    res = client.get('/robots.txt')
+    assert res.status_code == 200
+    assert res.content_type.startswith('text/plain')
+    content = res.data.decode('utf-8')
+    assert 'User-agent: *' in content
+    assert 'Allow: /' in content
+    assert 'Disallow: /api/' in content
+    assert 'Disallow: /results' in content
+    assert 'Disallow: /preview' in content
+    assert 'Disallow: /login' in content
+    assert 'Disallow: /register' in content
+    assert 'Disallow: /saved-resumes' in content
+    assert 'Disallow: /history' in content
+    assert 'Sitemap: https://careerlense.xyz/sitemap.xml' in content
+
+
+def test_sitemap_xml(client):
+    res = client.get('/sitemap.xml')
+    assert res.status_code == 200
+    assert 'application/xml' in res.content_type or 'text/xml' in res.content_type
+    xml = res.data.decode('utf-8')
+    assert '<urlset' in xml
+    assert 'http://www.sitemaps.org/schemas/sitemap/0.9' in xml
+    expected_urls = [
+        'https://careerlense.xyz/',
+        'https://careerlense.xyz/resume-builder',
+        'https://careerlense.xyz/resume-analyzer',
+        'https://careerlense.xyz/ats-resume-checker',
+        'https://careerlense.xyz/job-matcher',
+        'https://careerlense.xyz/skill-gap-analysis',
+        'https://careerlense.xyz/ai-resume-writer',
+        'https://careerlense.xyz/features',
+        'https://careerlense.xyz/how-it-works',
+        'https://careerlense.xyz/about',
+        'https://careerlense.xyz/privacy',
+        'https://careerlense.xyz/terms',
+    ]
+    for url in expected_urls:
+        assert f'<loc>{url}</loc>' in xml
+
+
+def test_private_pages_noindex(client):
+    private_pages = [
+        '/results',
+        '/preview',
+        '/login',
+        '/register',
+        '/saved-resumes',
+        '/history',
+        '/nonexistent-page-404-check'
+    ]
+    for path in private_pages:
+        res = client.get(path)
+        html = res.data.decode('utf-8')
+        assert 'name="robots" content="noindex, nofollow"' in html
+
+
+def test_render_domain_301_redirect(client):
+    res = client.get('/', headers={'Host': 'careerlense-wtv4.onrender.com'})
+    assert res.status_code == 301
+    assert res.headers['Location'] == 'https://careerlense.xyz/'
+
+    res_path = client.get('/features?ref=test', headers={'Host': 'careerlense-wtv4.onrender.com'})
+    assert res_path.status_code == 301
+    assert res_path.headers['Location'] == 'https://careerlense.xyz/features?ref=test'
+

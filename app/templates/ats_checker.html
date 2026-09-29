@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}Free ATS Resume Checker — Test ATS Readability & Formatting | CareerLense{% endblock %}
+
+{% block meta_description %}Check if your resume can pass Applicant Tracking Systems. Analyze formatting, section headings, contact information, and parseability with CareerLense ATS checker.{% endblock %}
+
+{% block canonical_url %}<link rel="canonical" href="https://careerlense.xyz/ats-resume-checker">{% endblock %}
+
+{% block og_title %}<meta property="og:title" content="Free ATS Resume Checker — Test ATS Readability & Formatting | CareerLense">{% endblock %}
+{% block og_description %}<meta property="og:description" content="Check if your resume can pass Applicant Tracking Systems. Analyze formatting, section headings, and parseability instantly.">{% endblock %}
+{% block og_url %}<meta property="og:url" content="https://careerlense.xyz/ats-resume-checker">{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "SoftwareApplication",
+      "name": "CareerLense ATS Resume Checker",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web Browser",
+      "url": "https://careerlense.xyz/ats-resume-checker",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "description": "Free online ATS resume checker. Tests your resume against Applicant Tracking System parsing algorithms, evaluates layout readability, and flags parsing bottlenecks."
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How does the CareerLense ATS Resume Checker work?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The CareerLense ATS Checker processes your PDF or DOCX file using a multi-layer text extraction engine. It verifies whether standard section headings (Experience, Education, Skills) are recognizable, validates contact details, checks for parseable bullet points, and provides an estimated ATS readability score."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is PDF or DOCX better for passing ATS systems?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Both modern PDF and DOCX files work well with modern ATS platforms, provided they use standard selectable text rather than flattened image scans. CareerLense supports both PDF and DOCX formats."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I need to sign up or pay to check my ATS score?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. CareerLense is 100% free with no account or credit card required. You can upload and check your resume anonymously."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is my uploaded resume kept private?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Your resume is parsed in temporary server memory during your active browser session. Resumes are not stored permanently or shared with third parties unless you choose to register and save them."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block content %}
+<div class="py-14 bg-slate-50 dark:bg-slate-950 min-h-[calc(100vh-4rem)]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+        
+        <!-- Header -->
+        <div class="text-center max-w-3xl mx-auto space-y-3">
+            <div class="inline-flex items-center bg-white dark:bg-white/95 px-3 py-1.5 rounded-2xl shadow-xs border border-slate-200/80 dark:border-slate-300">
+                <img src="{{ logo_path }}" alt="CareerLense" width="126" height="28" class="h-8 sm:h-9 w-auto object-contain">
+            </div>
+            <div>
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-400 text-xs font-semibold border border-emerald-200 dark:border-emerald-800">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 100% Free &bull; No Sign-Up Needed
+                </div>
+            </div>
+            <h1 class="text-3xl sm:text-5xl font-black text-slate-900 dark:text-white tracking-tight">
+                Free ATS Resume Checker
+            </h1>
+            <p class="text-slate-600 dark:text-slate-400 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+                Test how Applicant Tracking Systems (ATS) read your resume. Detect unparseable formatting, missing sections, and formatting errors before applying.
+            </p>
+        </div>
+
+        <!-- Upload Component Card -->
+        <div class="p-8 sm:p-12 rounded-3xl bg-white dark:bg-slate-900 border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-brand-500 dark:hover:border-brand-500 transition-colors shadow-sm text-center relative group" id="dropZone">
+            
+            <input type="file" id="resumeFileInput" accept=".pdf,.docx" class="hidden">
+
+            <div class="space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-brand-50 dark:bg-brand-950/80 text-brand-600 dark:text-brand-400 flex items-center justify-center mx-auto shadow-sm group-hover:scale-110 transition-transform">
+                    <i data-lucide="file-check-2" class="w-8 h-8"></i>
+                </div>
+                
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white">
+                        Upload your resume to test ATS readability
+                    </h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                        Accepts <strong>PDF</strong> and <strong>DOCX</strong> (Up to 10MB)
+                    </p>
+                </div>
+
+                <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+                    <button type="button" id="browseFileBtn" class="px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-brand-600 hover:bg-brand-500 shadow-md shadow-brand-500/20 active:scale-95 transition-all">
+                        Upload Resume
+                    </button>
+                    <button type="button" id="useSampleBtn" class="px-4 py-2.5 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 transition-all">
+                        Try Sample Resume
+                    </button>
+                </div>
+
+                <!-- Selected File Display -->
+                <div id="fileSelectionBar" class="hidden mt-4 p-3 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 max-w-md mx-auto flex items-center justify-between text-xs">
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <i data-lucide="file-check" class="w-4 h-4 text-emerald-500 shrink-0"></i>
+                        <span id="selectedFileName" class="font-medium text-slate-800 dark:text-slate-200 truncate">resume.pdf</span>
+                    </div>
+                    <button type="button" id="startUploadBtn" class="px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shrink-0 shadow-sm">
+                        Run ATS Audit
+                    </button>
+                </div>
+            </div>
+
+            <!-- Loading Skeleton & Dynamic Status Overlay -->
+            <div id="loadingOverlay" class="hidden absolute inset-0 rounded-3xl bg-white/95 dark:bg-slate-900/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 space-y-4 z-20">
+                <div class="relative flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full border-4 border-brand-200 dark:border-brand-900 border-t-brand-600 animate-spin"></div>
+                    <i data-lucide="sparkles" class="w-6 h-6 text-brand-600 absolute"></i>
+                </div>
+                <div class="text-center space-y-1">
+                    <h3 id="loadingStatusText" class="text-sm font-bold text-slate-900 dark:text-white">
+                        Testing ATS readability...
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                        Checking text flow, verifying standard headers, and extracting keywords.
+                    </p>
+                </div>
+                <!-- Skeleton bars -->
+                <div class="w-64 space-y-2 pt-2">
+                    <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse"></div>
+                    <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse w-5/6 mx-auto"></div>
+                    <div class="h-2 bg-slate-200 dark:bg-slate-700 rounded-full animate-pulse w-4/6 mx-auto"></div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Explainer Section: What ATS Systems Check -->
+        <div class="space-y-6 pt-4">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">
+                    What Applicant Tracking Systems Look For
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                    Over 75% of resumes are screened by automated ATS software before a human recruiter reviews them.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 flex items-center justify-center font-bold">
+                        <i data-lucide="layout-grid" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Standard Section Headings</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        ATS parsers search for standard terminology like "Work Experience", "Education", and "Skills". Creative headers like "My Journey" frequently confuse automated screeners.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-10 h-10 rounded-xl bg-brand-50 dark:bg-brand-950/60 text-brand-600 flex items-center justify-center font-bold">
+                        <i data-lucide="file-text" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Clean Text Hierarchy</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Tables, complex multi-column layouts, and images can break text extraction. Single-column or clean two-column structures parse reliably.
+                    </p>
+                </div>
+
+                <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-2">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 flex items-center justify-center font-bold">
+                        <i data-lucide="check-circle" class="w-5 h-5"></i>
+                    </div>
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white">Keyword Alignment</h3>
+                    <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        ATS scanners index technical skills, certifications, and industry tools. CareerLense verifies that your hard skills are formatted in recognized taxonomies.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ATS Checklist Section -->
+        <div class="p-8 rounded-3xl bg-slate-900 text-white space-y-6">
+            <div class="max-w-2xl space-y-2">
+                <span class="text-xs font-bold uppercase tracking-wider text-brand-400">ATS Best Practices Checklist</span>
+                <h2 class="text-2xl font-bold">How to Ensure 90%+ ATS Pass Rate</h2>
+                <p class="text-slate-400 text-xs sm:text-sm">
+                    Follow these guidelines when building your resume in CareerLense to maximize ATS readability.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-300">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Use standard fonts such as Inter, Calibri, Helvetica, or Arial.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Never embed essential text inside images, charts, or SVG elements.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Include clear date ranges (Month Year &ndash; Present) for each position.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Provide complete contact details: email, phone, location, and LinkedIn URL.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Quantify bullet points with numbers, percentages, and metrics.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-400 shrink-0 mt-0.5"></i>
+                    <span>Use our built-in <a href="{{ url_for('main.builder') }}" class="text-brand-400 hover:underline font-semibold">Free Resume Builder</a> for guaranteed ATS-safe formatting.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="space-y-6 pt-4">
+            <h2 class="text-2xl font-bold text-slate-900 dark:text-white text-center">
+                Frequently Asked Questions About ATS Resumes
+            </h2>
+            <div class="space-y-3 max-w-3xl mx-auto">
+                <details class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm cursor-pointer">
+                    <summary class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center justify-between list-none">
+                        <span>How does CareerLense calculate the ATS readability score?</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        We run your resume file through a multi-pass parser that simulates ATS text extraction. It evaluates whether standard sections are detected, whether dates and organizations are properly segregated, whether bullet points contain action verbs, and whether your contact links are correctly identified.
+                    </p>
+                </details>
+
+                <details class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm cursor-pointer">
+                    <summary class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center justify-between list-none">
+                        <span>Can I build a fresh ATS-compliant resume directly on CareerLense?</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        Yes! Our <a href="{{ url_for('main.builder') }}" class="text-brand-600 dark:text-brand-400 font-semibold hover:underline">Resume Builder</a> produces 100% ATS-friendly PDF resumes formatted to strict parsing standards without complicated design elements that confuse parsers.
+                    </p>
+                </details>
+
+                <details class="group p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm cursor-pointer">
+                    <summary class="font-bold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center justify-between list-none">
+                        <span>Does checking my resume here cost anything?</span>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 group-open:rotate-180 transition-transform"></i>
+                    </summary>
+                    <p class="mt-2 text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                        No. CareerLense is completely free. There are no trial periods, watermarks, or paywalls for checking or exporting resumes.
+                    </p>
+                </details>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/analyzer.js') }}"></script>
+{% endblock %}
