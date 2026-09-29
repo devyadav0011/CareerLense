@@ -290,3 +290,57 @@ def test_render_domain_301_redirect(client):
     assert res_path.status_code == 301
     assert res_path.headers['Location'] == 'https://careerlense.xyz/features?ref=test'
 
+
+def test_resume_builder_ux_elements_and_empty_default(client):
+    res = client.get('/resume-builder')
+    assert res.status_code == 200
+    html = res.data.decode('utf-8')
+
+    # 1. Action buttons exist with correct IDs and labels
+    assert 'id="loadSampleBtn"' in html
+    assert 'Load Sample Resume' in html
+    assert 'id="clearAllBtn"' in html
+    assert 'Clear All' in html
+
+    # 2. No pre-filled input values exist in the form HTML
+    assert 'value="Devan Yadav"' not in html
+    assert 'value="Alex Morgan"' not in html
+    assert 'value="devan.yadav@example.com"' not in html
+
+    # 3. Builder endpoint /builder also has the same UX
+    res2 = client.get('/builder')
+    assert res2.status_code == 200
+    html2 = res2.data.decode('utf-8')
+    assert 'id="loadSampleBtn"' in html2
+    assert 'Load Sample Resume' in html2
+    assert 'id="clearAllBtn"' in html2
+    assert 'Clear All' in html2
+
+
+def test_builder_session_clear_and_preservation(client, sample_resume_data):
+    # Fresh session: current resume should be empty
+    res_fresh = client.get('/api/resume/current')
+    assert res_fresh.status_code == 200
+    assert res_fresh.get_json()['resume'] is None
+
+    # User enters data in current session -> preserved
+    res_save = client.post('/api/builder/save', json=sample_resume_data)
+    assert res_save.status_code == 200
+
+    res_curr = client.get('/api/resume/current')
+    assert res_curr.status_code == 200
+    curr_data = res_curr.get_json()
+    assert curr_data['resume'] is not None
+    assert curr_data['resume']['structured_data']['personal_info']['full_name'] == sample_resume_data['personal_info']['full_name']
+
+    # User explicitly clicks Clear All -> DELETE /api/resume/current
+    res_delete = client.delete('/api/resume/current')
+    assert res_delete.status_code == 200
+    assert res_delete.get_json()['success'] is True
+
+    # After clearing: session is completely blank
+    res_after = client.get('/api/resume/current')
+    assert res_after.status_code == 200
+    assert res_after.get_json()['resume'] is None
+
+

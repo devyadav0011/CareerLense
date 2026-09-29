@@ -121,18 +121,94 @@
         loadInitialResumeData();
     }
 
+    function setInputValue(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.value = val || '';
+    }
+
+    function hasResumeContent(data) {
+        if (!data) return false;
+        const pi = data.personal_info || {};
+        for (const k in pi) {
+            if (typeof pi[k] === 'string' && pi[k].trim().length > 0) return true;
+        }
+        const sk = data.skills || {};
+        for (const k in sk) {
+            if (Array.isArray(sk[k]) && sk[k].length > 0) return true;
+            if (typeof sk[k] === 'string' && sk[k].trim().length > 0) return true;
+        }
+        if (Array.isArray(data.experience) && data.experience.some(e => (e.position && e.position.trim()) || (e.company && e.company.trim()) || (e.description && e.description.trim()))) return true;
+        if (Array.isArray(data.projects) && data.projects.some(p => (p.name && p.name.trim()) || (p.description && p.description.trim()))) return true;
+        if (Array.isArray(data.education) && data.education.some(ed => (ed.institution && ed.institution.trim()) || (ed.degree && ed.degree.trim()))) return true;
+        if (Array.isArray(data.certifications) && data.certifications.some(c => (c.certification && c.certification.trim()) || (c.name && c.name.trim()))) return true;
+        if (Array.isArray(data.achievements) && data.achievements.some(a => (a.title && a.title.trim()) || (a.description && a.description.trim()))) return true;
+        return false;
+    }
+
     async function loadInitialResumeData() {
         try {
             const res = await fetch('/api/resume/current');
             const data = await res.json();
-            if (data.resume && data.resume.structured_data && Object.keys(data.resume.structured_data).length > 0) {
+            if (data.resume && data.resume.structured_data && hasResumeContent(data.resume.structured_data)) {
                 populateForm(data.resume.structured_data);
                 return;
             }
         } catch (e) {}
 
-        // If nothing in session, load sample by default for instant delight
-        populateForm(SAMPLE_RESUME);
+        // Default: Open with empty fields. Do not automatically populate dummy data.
+        clearAllForm(false);
+    }
+
+    function clearAllForm(syncServer = true) {
+        if (saveTimeout) {
+            clearTimeout(saveTimeout);
+            saveTimeout = null;
+        }
+
+        resumeData.personal_info = {
+            full_name: '',
+            title: '',
+            email: '',
+            phone: '',
+            location: '',
+            linkedin: '',
+            github: '',
+            portfolio: '',
+            summary: ''
+        };
+        resumeData.skills = {
+            programming_languages: [],
+            frameworks: [],
+            databases: [],
+            cloud: [],
+            tools: [],
+            all: []
+        };
+        resumeData.experience = [];
+        resumeData.projects = [];
+        resumeData.education = [];
+        resumeData.certifications = [];
+        resumeData.achievements = [];
+
+        const inputIds = [
+            'pi_fullName', 'pi_title', 'pi_email', 'pi_phone', 'pi_location',
+            'pi_linkedin', 'pi_github', 'pi_portfolio', 'pi_summary',
+            'skills_lang', 'skills_frameworks', 'skills_databases', 'skills_cloud', 'skills_tools',
+            'certifications_text', 'achievements_text'
+        ];
+        inputIds.forEach(id => setInputValue(id, ''));
+
+        renderExperienceList();
+        renderProjectsList();
+        renderEducationList();
+        renderLivePreview();
+
+        if (syncServer) {
+            try {
+                fetch('/api/resume/current', { method: 'DELETE' });
+            } catch (e) {}
+            window.CareerLense?.showToast('Resume form cleared', 'info');
+        }
     }
 
     function populateForm(data) {
@@ -140,23 +216,23 @@
 
         // Personal info
         const pi = data.personal_info || {};
-        document.getElementById('pi_fullName').value = pi.full_name || '';
-        document.getElementById('pi_title').value = pi.title || '';
-        document.getElementById('pi_email').value = pi.email || '';
-        document.getElementById('pi_phone').value = pi.phone || '';
-        document.getElementById('pi_location').value = pi.location || '';
-        document.getElementById('pi_linkedin').value = pi.linkedin || '';
-        document.getElementById('pi_github').value = pi.github || '';
-        document.getElementById('pi_portfolio').value = pi.portfolio || '';
-        document.getElementById('pi_summary').value = pi.summary || '';
+        setInputValue('pi_fullName', pi.full_name || '');
+        setInputValue('pi_title', pi.title || '');
+        setInputValue('pi_email', pi.email || '');
+        setInputValue('pi_phone', pi.phone || '');
+        setInputValue('pi_location', pi.location || '');
+        setInputValue('pi_linkedin', pi.linkedin || '');
+        setInputValue('pi_github', pi.github || '');
+        setInputValue('pi_portfolio', pi.portfolio || '');
+        setInputValue('pi_summary', pi.summary || '');
 
         // Skills
         const sk = data.skills || {};
-        document.getElementById('skills_lang').value = (sk.programming_languages || []).join(', ');
-        document.getElementById('skills_frameworks').value = (sk.frameworks || []).join(', ');
-        document.getElementById('skills_databases').value = (sk.databases || []).join(', ');
-        document.getElementById('skills_cloud').value = (sk.cloud || []).join(', ');
-        document.getElementById('skills_tools').value = (sk.tools || []).join(', ');
+        setInputValue('skills_lang', (sk.programming_languages || []).join(', '));
+        setInputValue('skills_frameworks', (sk.frameworks || []).join(', '));
+        setInputValue('skills_databases', (sk.databases || []).join(', '));
+        setInputValue('skills_cloud', (sk.cloud || []).join(', '));
+        setInputValue('skills_tools', (sk.tools || []).join(', '));
 
         // Experience
         resumeData.experience = JSON.parse(JSON.stringify(data.experience || []));
@@ -172,15 +248,19 @@
 
         // Certifications & Achievements
         if (data.certifications && data.certifications.length > 0) {
-            document.getElementById('certifications_text').value = data.certifications.map(c => 
+            setInputValue('certifications_text', data.certifications.map(c => 
                 `${c.certification || c.name || ''} | ${c.issuer || ''} | ${c.date || ''}`
-            ).join('\n');
+            ).join('\n'));
+        } else {
+            setInputValue('certifications_text', '');
         }
 
         if (data.achievements && data.achievements.length > 0) {
-            document.getElementById('achievements_text').value = data.achievements.map(a => 
+            setInputValue('achievements_text', data.achievements.map(a => 
                 a.title ? `${a.title}: ${a.description || ''}` : (a.description || '')
-            ).join('\n');
+            ).join('\n'));
+        } else {
+            setInputValue('achievements_text', '');
         }
 
         syncModelFromInputs();
@@ -206,14 +286,21 @@
             }
         });
 
-        // Load sample button
+        // Load sample resume button
         document.getElementById('loadSampleBtn')?.addEventListener('click', () => {
             populateForm(SAMPLE_RESUME);
+            scheduleAutoSave();
             window.CareerLense?.showToast('Loaded sample software engineer resume!', 'success');
+        });
+
+        // Clear all button
+        document.getElementById('clearAllBtn')?.addEventListener('click', () => {
+            clearAllForm(true);
         });
     }
 
     function syncModelFromInputs() {
+        if (!document.getElementById('pi_fullName')) return;
         resumeData.personal_info.full_name = document.getElementById('pi_fullName')?.value.trim() || '';
         resumeData.personal_info.title = document.getElementById('pi_title')?.value.trim() || '';
         resumeData.personal_info.email = document.getElementById('pi_email')?.value.trim() || '';
@@ -337,6 +424,11 @@
         if (!container) return;
 
         container.innerHTML = '';
+        if (resumeData.experience.length === 0) {
+            container.innerHTML = '<p class="text-xs text-slate-400 dark:text-slate-500 italic py-2">No work experience added yet. Click "+ Add Position" above to add your experience.</p>';
+            return;
+        }
+
         resumeData.experience.forEach((exp, idx) => {
             const card = document.createElement('div');
             card.className = 'p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700 space-y-3';
@@ -384,6 +476,7 @@
                         resumeData.experience[i].description = d.improved;
                         renderExperienceList();
                         renderLivePreview();
+                        scheduleAutoSave();
                         window.CareerLense?.showToast('Bullet points improved!', 'success');
                     }
                 } catch (err) {
@@ -400,6 +493,11 @@
         if (!container) return;
 
         container.innerHTML = '';
+        if (resumeData.projects.length === 0) {
+            container.innerHTML = '<p class="text-xs text-slate-400 dark:text-slate-500 italic py-2">No projects added yet. Click "+ Add Project" above to showcase your projects.</p>';
+            return;
+        }
+
         resumeData.projects.forEach((proj, idx) => {
             const card = document.createElement('div');
             card.className = 'p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700 space-y-3';
@@ -447,6 +545,7 @@
                         resumeData.projects[i].description = d.improved;
                         renderProjectsList();
                         renderLivePreview();
+                        scheduleAutoSave();
                         window.CareerLense?.showToast('Project description improved!', 'success');
                     }
                 } catch (err) {
@@ -463,6 +562,10 @@
         if (!container) return;
 
         container.innerHTML = '';
+        if (resumeData.education.length === 0) {
+            container.innerHTML = '<p class="text-xs text-slate-400 dark:text-slate-500 italic py-2">No education added yet. Click "+ Add Education" above to add degrees or courses.</p>';
+            return;
+        }
         resumeData.education.forEach((edu, idx) => {
             const card = document.createElement('div');
             card.className = 'p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/70 dark:border-slate-700 space-y-3';
@@ -494,13 +597,30 @@
         const sheet = document.getElementById('resumePreviewSheet');
         if (!sheet) return;
 
-        const pi = resumeData.personal_info;
-        const skills = resumeData.skills;
-        const exp = resumeData.experience;
-        const projs = resumeData.projects;
-        const edu = resumeData.education;
-        const certs = resumeData.certifications;
-        const ach = resumeData.achievements;
+        const pi = resumeData.personal_info || {};
+        const skills = resumeData.skills || {};
+        const exp = resumeData.experience || [];
+        const projs = resumeData.projects || [];
+        const edu = resumeData.education || [];
+        const certs = resumeData.certifications || [];
+        const ach = resumeData.achievements || [];
+
+        if (!hasResumeContent(resumeData)) {
+            sheet.innerHTML = `
+                <!-- Resume Header Placeholder -->
+                <div class="preview-header">
+                    <h1 class="text-2xl font-black tracking-tight opacity-40 italic">Your Full Name</h1>
+                    <p class="text-xs opacity-50 mt-1">Professional Title</p>
+                </div>
+                <div class="py-16 text-center text-slate-400 dark:text-slate-500 space-y-2">
+                    <i data-lucide="file-edit" class="w-8 h-8 mx-auto text-slate-300 dark:text-slate-600 mb-2"></i>
+                    <p class="text-sm font-medium text-slate-500 dark:text-slate-400">Your live resume preview will appear here as you type.</p>
+                    <p class="text-xs text-slate-400">Fill in the fields on the left, or click <button type="button" class="text-brand-600 dark:text-brand-400 font-semibold underline hover:no-underline" onclick="window.CareerLenseBuilder.loadSample()">Load Sample Resume</button> to see an example.</p>
+                </div>
+            `;
+            if (window.lucide) window.lucide.createIcons();
+            return;
+        }
 
         let contactParts = [];
         if (pi.email) contactParts.push(`<a href="mailto:${escapeHtml(pi.email)}" class="hover:underline">${escapeHtml(pi.email)}</a>`);
@@ -640,17 +760,24 @@
         if (saveTimeout) clearTimeout(saveTimeout);
         saveTimeout = setTimeout(async () => {
             try {
-                await fetch('/api/builder/save', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(resumeData)
-                });
+                if (hasResumeContent(resumeData)) {
+                    await fetch('/api/builder/save', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(resumeData)
+                    });
+                }
             } catch (e) {}
         }, 1200);
     }
 
     function bindExportButtons() {
         document.getElementById('exportPdfBtn')?.addEventListener('click', async () => {
+            if (!hasResumeContent(resumeData)) {
+                window.CareerLense?.showToast('Please enter your resume details or load a sample first.', 'warning');
+                return;
+            }
+
             const btn = document.getElementById('exportPdfBtn');
             btn.innerHTML = '<span class="animate-spin">⏳</span> Generating...';
 
@@ -683,7 +810,32 @@
         });
 
         document.getElementById('printResumeBtn')?.addEventListener('click', () => {
+            if (!hasResumeContent(resumeData)) {
+                window.CareerLense?.showToast('Please enter your resume details or load a sample first.', 'warning');
+                return;
+            }
             window.print();
+        });
+
+        document.getElementById('analyzeThisResumeBtn')?.addEventListener('click', async (e) => {
+            if (!hasResumeContent(resumeData)) {
+                e.preventDefault();
+                window.CareerLense?.showToast('Please enter your resume details or load a sample first.', 'warning');
+                return;
+            }
+            e.preventDefault();
+            const btn = document.getElementById('analyzeThisResumeBtn');
+            btn.innerHTML = '<span class="animate-spin">⏳</span> Saving...';
+            try {
+                await fetch('/api/builder/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(resumeData)
+                });
+                window.location.href = btn.getAttribute('href');
+            } catch (err) {
+                window.location.href = btn.getAttribute('href');
+            }
         });
     }
 
@@ -709,6 +861,7 @@
                     document.getElementById('pi_summary').value = d.improved;
                     syncModelFromInputs();
                     renderLivePreview();
+                    scheduleAutoSave();
                     window.CareerLense?.showToast('Professional summary improved!', 'success');
                 }
             } catch (err) {
@@ -726,7 +879,7 @@
         return String(text).replace(/[&<>"']/g, m => map[m]);
     }
 
-    // Public API for inline onclick handlers in dynamic cards
+    // Public API for inline onclick handlers in dynamic cards & programmatic controls
     window.CareerLenseBuilder = {
         updateExp: (idx, field, val) => {
             if (resumeData.experience[idx]) {
@@ -766,7 +919,15 @@
             renderEducationList();
             renderLivePreview();
             scheduleAutoSave();
-        }
+        },
+        clearAll: () => clearAllForm(true),
+        loadSample: () => {
+            populateForm(SAMPLE_RESUME);
+            scheduleAutoSave();
+            window.CareerLense?.showToast('Loaded sample software engineer resume!', 'success');
+        },
+        getResumeData: () => JSON.parse(JSON.stringify(resumeData)),
+        hasResumeContent: () => hasResumeContent(resumeData)
     };
 
     if (document.readyState === 'loading') {
